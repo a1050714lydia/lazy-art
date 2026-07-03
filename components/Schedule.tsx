@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+
 type ScheduleProps = {
   onSelect: (schedule: string) => void;
 };
@@ -29,12 +34,53 @@ const schedules = [
   },
 ];
 
-export default function Schedule({ onSelect }: ScheduleProps) {
+export default function Schedule({
+  onSelect,
+}: ScheduleProps) {
+
+  const [countMap, setCountMap] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+
+    loadCount();
+
+    const timer = setInterval(() => {
+      loadCount();
+    }, 10000);
+
+    return () => clearInterval(timer);
+
+  }, []);
+
+  async function loadCount() {
+
+    const { data, error } = await supabase
+      .from("registrations")
+      .select("schedule")
+      .eq("payment_status", "已付款");
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    const map: Record<string, number> = {};
+
+    (data ?? []).forEach((item) => {
+      map[item.schedule] = (map[item.schedule] || 0) + 1;
+    });
+
+    setCountMap(map);
+
+  }
+
   return (
+
     <section
       id="schedule"
       className="py-28 bg-white"
     >
+
       <div className="max-w-7xl mx-auto px-6">
 
         <div className="text-center">
@@ -54,42 +100,92 @@ export default function Schedule({ onSelect }: ScheduleProps) {
 
         </div>
 
-        <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">{schedules.map((item) => {
 
-          {schedules.map((item) => (
-            <div
-              key={item.date}
-              className="rounded-[30px] border border-[#E8D7D9] bg-[#FAF7F2] p-8 transition hover:-translate-y-1 hover:shadow-xl"
-            >
-              <h3 className="text-3xl font-bold text-[#8B1E2D]">
-                {item.date}
-              </h3>
+  const scheduleText = `${item.date}　${item.time}`;
 
-              <p className="mt-5 text-lg text-slate-600">
-                {item.time}
-              </p>
+  const count = countMap[scheduleText] || 0;
 
-              <button
-                onClick={() => {
-                  onSelect(`${item.date}　${item.time}`);
+  const full = count >= 5;
 
-                  document
-                    .getElementById("signup")
-                    ?.scrollIntoView({
-                      behavior: "smooth",
-                    });
-                }}
-                className="mt-8 rounded-full bg-[#8B1E2D] px-8 py-3 text-white transition hover:bg-[#721825]"
-              >
-                我要報名
-              </button>
+  return (
 
-            </div>
-          ))}
+    <div
+      key={scheduleText}
+      className={`rounded-[30px] border p-8 transition ${
+        full
+          ? "border-gray-200 bg-gray-100"
+          : "border-[#E8D7D9] bg-[#FAF7F2] hover:-translate-y-1 hover:shadow-xl"
+      }`}
+    >
+
+      <h3 className="text-3xl font-bold text-[#8B1E2D]">
+        {item.date}
+      </h3>
+
+      <p className="mt-5 text-lg text-slate-600">
+        {item.time}
+      </p>
+
+      <div className="mt-6">
+
+        <p className="text-sm text-slate-500">
+          已付款名額
+        </p>
+
+        <p className="mt-1 text-2xl font-bold text-[#8B1E2D]">
+          {count} / 5
+        </p>
+
+        {full ? (
+
+          <p className="mt-2 font-bold text-red-600">
+            🔴 已額滿
+          </p>
+
+        ) : (
+
+          <p className="mt-2 text-green-600 font-medium">
+            剩餘 {5 - count} 組
+          </p>
+
+        )}
+
+      </div>
+
+      <button
+        disabled={full}
+        onClick={() => {
+
+          onSelect(scheduleText);
+
+          document
+            .getElementById("signup")
+            ?.scrollIntoView({
+              behavior: "smooth",
+            });
+
+        }}
+        className={`mt-8 w-full rounded-full py-4 text-lg font-bold transition ${
+          full
+            ? "cursor-not-allowed bg-gray-400 text-white"
+            : "bg-[#8B1E2D] text-white hover:bg-[#721825]"
+        }`}
+      >
+        {full ? "已額滿" : "我要報名"}
+      </button>
+
+    </div>
+
+  );
+
+})}
 
         </div>
 
       </div>
+
     </section>
+
   );
 }

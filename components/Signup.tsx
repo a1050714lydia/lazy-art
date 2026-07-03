@@ -74,7 +74,26 @@ export default function Signup({
       alert("請填寫完整資料");
       return;
     }
+// 再確認梯次是否額滿（只計算已付款）
+const { count: scheduleCount, error: scheduleError } = await supabase
+  .from("registrations")
+  .select("*", {
+    count: "exact",
+    head: true,
+  })
+  .eq("schedule", selectedSchedule)
+  .eq("payment_status", "已付款");
 
+if (scheduleError) {
+  console.error(scheduleError);
+  alert("無法確認梯次名額");
+  return;
+}
+
+if ((scheduleCount ?? 0) >= 5) {
+  alert("❌ 此梯次已額滿，請選擇其他時段。");
+  return;
+}
     setLoading(true);
 
     const { error } = await supabase
@@ -143,6 +162,7 @@ NT$${totalPrice}
     setPolaroid(false);
 
     await loadPrice();
+    window.location.reload();
   };
 
   return (
