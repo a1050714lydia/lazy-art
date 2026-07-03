@@ -30,7 +30,7 @@ export default function Navbar() {
         </a>
 
         {/* 桌機版選單 */}
-        <nav className="hidden lg:flex items-center gap-8 text-[17px] font-medium text-slate-700">
+        <nav className="hidden lg:flex items-center gap-8 text-[12px] font-medium text-slate-700">
 
           <a
             href="#about"
