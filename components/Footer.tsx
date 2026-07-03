@@ -4,7 +4,6 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 text-center">
         <h3 className="text-2xl font-bold">Lazy Art 懶畫得室</h3>
 
-      
         <p className="mt-2 text-white/60 text-sm">
           © 2023 Lazy Art. 
         </p>
