@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Pricing() {
   return (
     <section
@@ -81,12 +83,12 @@ export default function Pricing() {
               原價 NT$2280
             </p>
 
-            <a
-              href="#signup"
-              className="mt-8 inline-block w-full rounded-full bg-[#8B1E2D] py-4 text-lg font-bold text-white transition hover:bg-[#721825]"
+            <Link
+              href="/signup"
+              className="mt-8 flex w-full items-center justify-center rounded-full bg-[#8B1E2D] py-4 text-lg font-bold text-white transition hover:bg-[#721825]"
             >
               立即報名
-            </a>
+            </Link>
 
           </div>
 
