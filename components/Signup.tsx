@@ -43,12 +43,13 @@ export default function Signup({
 
   async function loadPrice() {
 
-    const { count, error } = await supabase
-      .from("registrations")
-      .select("*", {
-        count: "exact",
-        head: true,
-      });
+ const { count, error } = await supabase
+  .from("registrations")
+  .select("*", {
+    count: "exact",
+    head: true,
+  })
+  .eq("payment_status", "已付款");
 
     if (error) {
       console.error(error);
@@ -71,9 +72,9 @@ export default function Signup({
     }
 
     if (!parentName || !phone || !childName) {
-      alert("請填寫完整資料");
-      return;
-    }
+  alert("請填寫完整資料");
+  return;
+}
 // 再確認梯次是否額滿（只計算已付款）
 const { count: scheduleCount, error: scheduleError } = await supabase
   .from("registrations")
@@ -120,7 +121,9 @@ if ((scheduleCount ?? 0) >= 5) {
 
           total_price: totalPrice,
 
-          payment_status: "未付款",
+  payment_status: "待付款",
+paid: false,
+          
         },
       ]);
 

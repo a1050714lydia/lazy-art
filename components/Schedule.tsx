@@ -53,12 +53,10 @@ export default function Schedule({
   }, []);
 
   async function loadCount() {
-
-    const { data, error } = await supabase
-      .from("registrations")
-      .select("schedule")
-      .eq("payment_status", "已付款");
-
+const { data, error } = await supabase
+  .from("registrations")
+  .select("schedule, payment_status")
+  .neq("payment_status", "已取消");
     if (error) {
       console.error(error);
       return;
