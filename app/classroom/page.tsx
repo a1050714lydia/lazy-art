@@ -1,9 +1,17 @@
-export default function CoursePage() {
+import Navbar from "@/components/Navbar";
+import Classroom from "@/components/Classroom";
+import Footer from "@/components/Footer";
+
+export default function ClassroomPage() {
   return (
-    <main className="pt-32 max-w-6xl mx-auto px-6">
-      <h1 className="text-5xl font-black text-[#8B1E2D]">
-        課程介紹
-      </h1>
-    </main>
+    <>
+      <Navbar />
+
+      <main className="pt-24 md:pt-28 overflow-x-hidden">
+        <Classroom />
+      </main>
+
+      <Footer />
+    </>
   );
 }

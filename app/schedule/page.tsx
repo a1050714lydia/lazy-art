@@ -1,9 +1,28 @@
+"use client";
+
+import { useState } from "react";
+
+import Navbar from "@/components/Navbar";
+import Schedule from "@/components/Schedule";
+import Signup from "@/components/Signup";
+import Footer from "@/components/Footer";
+
 export default function SchedulePage() {
+  const [selectedSchedule, setSelectedSchedule] = useState("");
+
   return (
-    <main className="pt-32 max-w-6xl mx-auto px-6">
-      <h1 className="text-5xl font-black text-[#8B1E2D]">
-        課程梯次
-      </h1>
-    </main>
+    <>
+      <Navbar />
+
+      <main className="pt-24 md:pt-28 overflow-x-hidden">
+        <Schedule onSelect={setSelectedSchedule} />
+
+        <Signup
+          selectedSchedule={selectedSchedule}
+        />
+      </main>
+
+      <Footer />
+    </>
   );
 }
