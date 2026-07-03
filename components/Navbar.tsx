@@ -36,7 +36,7 @@ export default function Navbar() {
 
         </Link>
 
-        {/* 電腦版 */}
+        {/* 桌機版 */}
         <nav className="hidden lg:flex items-center gap-8 text-[15px] font-medium text-slate-700">
 
           <Link href="/about" className="hover:text-[#8B1E2D] transition">
@@ -49,10 +49,6 @@ export default function Navbar() {
 
           <Link href="/course" className="hover:text-[#8B1E2D] transition">
             課程介紹
-          </Link>
-
-          <Link href="/schedule" className="hover:text-[#8B1E2D] transition">
-            課程梯次
           </Link>
 
           <Link href="/contact" className="hover:text-[#8B1E2D] transition">
@@ -81,6 +77,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="text-3xl text-[#8B1E2D]"
+            aria-label="開啟選單"
           >
             ☰
           </button>
@@ -89,15 +86,15 @@ export default function Navbar() {
 
       </div>
 
-      {/* 手機展開選單 */}
+      {/* 手機選單 */}
       {menuOpen && (
         <div className="lg:hidden bg-white border-t shadow-md">
 
-          <nav className="flex flex-col py-4">
+          <nav className="flex flex-col py-2">
 
             <Link
               href="/about"
-              className="px-6 py-3 hover:bg-gray-50"
+              className="px-6 py-4 hover:bg-gray-50"
               onClick={() => setMenuOpen(false)}
             >
               關於畫室
@@ -105,7 +102,7 @@ export default function Navbar() {
 
             <Link
               href="/classroom"
-              className="px-6 py-3 hover:bg-gray-50"
+              className="px-6 py-4 hover:bg-gray-50"
               onClick={() => setMenuOpen(false)}
             >
               教室環境
@@ -113,26 +110,26 @@ export default function Navbar() {
 
             <Link
               href="/course"
-              className="px-6 py-3 hover:bg-gray-50"
+              className="px-6 py-4 hover:bg-gray-50"
               onClick={() => setMenuOpen(false)}
             >
               課程介紹
             </Link>
 
             <Link
-              href="/schedule"
-              className="px-6 py-3 hover:bg-gray-50"
-              onClick={() => setMenuOpen(false)}
-            >
-              課程梯次
-            </Link>
-
-            <Link
               href="/contact"
-              className="px-6 py-3 hover:bg-gray-50"
+              className="px-6 py-4 hover:bg-gray-50"
               onClick={() => setMenuOpen(false)}
             >
               聯絡我們
+            </Link>
+
+            <Link
+              href="/signup"
+              className="mx-6 mt-2 mb-3 rounded-full bg-[#8B1E2D] py-3 text-center font-semibold text-white"
+              onClick={() => setMenuOpen(false)}
+            >
+              立即報名
             </Link>
 
           </nav>
