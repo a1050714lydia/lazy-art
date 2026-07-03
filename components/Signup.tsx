@@ -102,7 +102,8 @@ export default function Signup({
 
     if (error) {
       console.error(error);
-      alert("送出失敗");
+
+alert(JSON.stringify(error, null, 2));
       return;
     }
 
