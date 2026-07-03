@@ -13,7 +13,7 @@ export default function Pricing() {
           </p>
 
           <h2 className="text-5xl font-black mt-5 text-[#8B1E2D]">
-            爸爸節限定課程
+            父親節限定課程
           </h2>
 
           <p className="text-slate-600 text-xl mt-6">
@@ -67,13 +67,13 @@ export default function Pricing() {
                   NT$1880
                 </span>
 
-                <span className="text-xl text-slate-500 ml-3">
+                <span className="text-xl text-slate-200 ml-3">
                   / 前五組
                 </span>
 
               </div>
 
-              <p className="line-through text-slate-400 mt-4">
+              <p className="line-through text-slate-100 mt-4">
                 原價 NT$2280
               </p>
 
