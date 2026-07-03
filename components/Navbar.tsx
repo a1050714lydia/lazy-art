@@ -11,8 +11,8 @@ export default function Navbar() {
           <Image
             src="/images/logo.png"
             alt="Lazy Art"
-            width={60}
-            height={60}
+            width={55}
+            height={55}
             priority
             className="w-12 h-12 md:w-14 md:h-14 object-contain"
           />
