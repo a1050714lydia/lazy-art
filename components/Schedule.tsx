@@ -127,26 +127,27 @@ export default function Schedule({
         {item.time}
       </p>
 
-      <div className="mt-6">
-{full ? (
-  <>
-    <p className="mt-4 text-3xl font-bold text-red-600">
-      🔴 已額滿
-    </p>
-  </>
-) : (
-  <>
-    <p className="text-sm text-slate-500">
-      剩餘名額
-    </p>
+     <div className="mt-6">
 
-    <p className="mt-2 text-3xl font-bold text-green-600">
-      {5 - count} / 5 組
-    </p>
-  </>
-)}
+  {full ? (
+    <>
+      <p className="mt-4 text-3xl font-bold text-red-600">
+        🔴 已額滿
+      </p>
+    </>
+  ) : (
+    <>
+      <p className="text-sm text-slate-500">
+        剩餘名額
+      </p>
 
-      </div>
+      <p className="mt-2 text-3xl font-bold text-green-600">
+        {5 - count} / 5 組
+      </p>
+    </>
+  )}
+
+</div>
 
       <button
         disabled={full}
@@ -167,7 +168,13 @@ export default function Schedule({
             : "bg-[#8B1E2D] text-white hover:bg-[#721825]"
         }`}
       >
-        {full ? "已額滿" : "我要報名"}
+     {
+  full
+    ? "已額滿"
+    : count === 4
+    ? "🔥 最後 1 組"
+    : "立即報名"
+}
       </button>
 
     </div>
