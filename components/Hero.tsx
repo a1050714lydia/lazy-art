@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 export default function Hero() {
@@ -5,10 +6,9 @@ export default function Hero() {
     <section className="bg-gradient-to-br from-[#FCFAF8] via-[#F8F4EF] to-[#F6F2EC]">
       <div className="max-w-7xl mx-auto px-5 md:px-6 pt-24 md:pt-36 pb-16 md:pb-20 grid gap-12 lg:grid-cols-[1.15fr_0.85fr] items-center">
 
-        {/* ===== 手機圖片區 ===== */}
+        {/* 圖片 */}
         <div className="relative flex flex-col items-center order-1 lg:order-2">
 
-          {/* 放到圖片上方 */}
           <p className="mb-5 text-sm md:text-lg font-semibold tracking-[0.25em] uppercase text-slate-500 text-center">
             LAZY ART × FATHER'S DAY
           </p>
@@ -26,14 +26,13 @@ export default function Hero() {
 
         </div>
 
-        {/* ===== 文字 ===== */}
+        {/* 文字 */}
         <div className="order-2 lg:order-1 text-center lg:text-left">
 
           <span className="inline-block rounded-full bg-[#F7E8EA] px-5 py-2 text-xs md:text-sm font-semibold tracking-wider text-[#8B1E2D]">
             FATHER'S DAY SPECIAL
           </span>
 
-          {/* 電腦版才顯示，手機已移到圖片上方 */}
           <p className="hidden lg:block mt-6 text-lg font-semibold tracking-[0.25em] uppercase text-slate-500">
             LAZY ART × FATHER'S DAY
           </p>
@@ -52,19 +51,21 @@ export default function Hero() {
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
 
-            <a
-              href="#signup"
+            {/* 立即報名 */}
+            <Link
+              href="/signup"
               className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-[#8B1E2D] px-10 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-[#721825]"
             >
               立即報名 →
-            </a>
+            </Link>
 
-            <a
-              href="#pricing"
+            {/* 了解課程 */}
+            <Link
+              href="/course"
               className="w-full sm:w-auto inline-flex items-center justify-center rounded-full border-2 border-[#8B1E2D] px-10 py-4 text-lg font-semibold text-[#8B1E2D] transition hover:bg-[#8B1E2D] hover:text-white"
             >
               了解課程
-            </a>
+            </Link>
 
           </div>
 
