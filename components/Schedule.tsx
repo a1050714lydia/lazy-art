@@ -128,28 +128,23 @@ export default function Schedule({
       </p>
 
       <div className="mt-6">
+{full ? (
+  <>
+    <p className="mt-4 text-3xl font-bold text-red-600">
+      🔴 已額滿
+    </p>
+  </>
+) : (
+  <>
+    <p className="text-sm text-slate-500">
+      剩餘名額
+    </p>
 
-        <p className="text-sm text-slate-500">
-          已付款名額
-        </p>
-
-        <p className="mt-1 text-2xl font-bold text-[#8B1E2D]">
-          {count} / 5
-        </p>
-
-        {full ? (
-
-          <p className="mt-2 font-bold text-red-600">
-            🔴 已額滿
-          </p>
-
-        ) : (
-
-          <p className="mt-2 text-green-600 font-medium">
-            剩餘 {5 - count} 組
-          </p>
-
-        )}
+    <p className="mt-2 text-3xl font-bold text-green-600">
+      {5 - count} / 5 組
+    </p>
+  </>
+)}
 
       </div>
 
