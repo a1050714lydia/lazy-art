@@ -1,3 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import { supabase } from "@/lib/supabase";
+
 type SignupProps = {
   selectedSchedule: string;
 };
@@ -5,6 +10,59 @@ type SignupProps = {
 export default function Signup({
   selectedSchedule,
 }: SignupProps) {
+
+  const [parentName, setParentName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [lineId, setLineId] = useState("");
+  const [childName, setChildName] = useState("");
+  const [note, setNote] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+
+    if (!selectedSchedule) {
+      alert("請先選擇活動梯次");
+      return;
+    }
+
+    if (!parentName || !phone || !childName) {
+      alert("請填寫完整資料");
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await supabase
+      .from("registrations")
+      .insert([
+        {
+          schedule: selectedSchedule,
+          parent_name: parentName,
+          phone: phone,
+          line_id: lineId,
+          child_name: childName,
+          note: note,
+        },
+      ]);
+
+    setLoading(false);
+
+    if (error) {
+      console.error(error);
+      alert("送出失敗");
+      return;
+    }
+
+    alert("🎉 報名成功！");
+
+    setParentName("");
+    setPhone("");
+    setLineId("");
+    setChildName("");
+    setNote("");
+  };
+
   return (
     <section
       id="signup"
@@ -30,7 +88,6 @@ export default function Signup({
 
         <div className="mt-12 rounded-[36px] bg-white p-10 shadow-xl space-y-6">
 
-          {/* 已選梯次 */}
           <div>
 
             <label className="mb-2 block font-semibold text-[#8B1E2D]">
@@ -46,7 +103,6 @@ export default function Signup({
 
           </div>
 
-          {/* 家長姓名 */}
           <div>
 
             <label className="mb-2 block font-semibold">
@@ -55,13 +111,14 @@ export default function Signup({
 
             <input
               type="text"
+              value={parentName}
+              onChange={(e) => setParentName(e.target.value)}
               placeholder="請輸入家長姓名"
               className="w-full rounded-xl border border-gray-300 px-4 py-3"
             />
 
           </div>
 
-          {/* 電話 */}
           <div>
 
             <label className="mb-2 block font-semibold">
@@ -70,13 +127,30 @@ export default function Signup({
 
             <input
               type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               placeholder="09xxxxxxxx"
               className="w-full rounded-xl border border-gray-300 px-4 py-3"
             />
 
           </div>
 
-          {/* 小朋友姓名 */}
+          <div>
+
+            <label className="mb-2 block font-semibold">
+              LINE ID（選填）
+            </label>
+
+            <input
+              type="text"
+              value={lineId}
+              onChange={(e) => setLineId(e.target.value)}
+              placeholder="方便聯絡"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3"
+            />
+
+          </div>
+
           <div>
 
             <label className="mb-2 block font-semibold">
@@ -85,13 +159,14 @@ export default function Signup({
 
             <input
               type="text"
+              value={childName}
+              onChange={(e) => setChildName(e.target.value)}
               placeholder="請輸入小朋友姓名"
               className="w-full rounded-xl border border-gray-300 px-4 py-3"
             />
 
           </div>
 
-          {/* 備註 */}
           <div>
 
             <label className="mb-2 block font-semibold">
@@ -100,22 +175,23 @@ export default function Signup({
 
             <textarea
               rows={4}
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
               placeholder="例如：食物過敏、是否加購拍立得紀念組..."
               className="w-full rounded-xl border border-gray-300 px-4 py-3"
             />
 
           </div>
 
-          {/* 送出 */}
           <button
-            className="w-full rounded-full bg-[#8B1E2D] py-5 text-xl font-bold text-white transition hover:bg-[#721825]"
+            onClick={handleSubmit}
+            disabled={loading}
+            className="w-full rounded-full bg-[#8B1E2D] py-5 text-xl font-bold text-white hover:bg-[#721825] disabled:bg-gray-400"
           >
-            送出報名
+            {loading ? "送出中..." : "送出報名"}
           </button>
 
         </div>
-
-        {/* 聯絡資訊 */}
 
         <div className="mt-12 rounded-[36px] bg-white p-10 shadow-xl">
 
@@ -125,21 +201,17 @@ export default function Signup({
 
           <div className="mt-8 space-y-8">
 
-            {/* 地址 */}
-
             <div>
 
               <p className="text-lg font-semibold text-[#8B1E2D]">
                 📍 上課地點
               </p>
 
-              <p className="mt-3 text-slate-600 leading-8">
+              <p className="mt-3 text-slate-600">
                 台北市中山區龍江路209巷17號2樓
               </p>
 
             </div>
-
-            {/* LINE */}
 
             <div>
 
@@ -155,15 +227,10 @@ export default function Signup({
                 href="https://lin.ee/sQ3gXXg"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-block rounded-full bg-[#8B1E2D] px-8 py-4 font-semibold text-white transition hover:bg-[#721825]"
+                className="mt-5 inline-block rounded-full bg-[#8B1E2D] px-8 py-4 text-white font-semibold hover:bg-[#721825]"
               >
                 加入官方 LINE
               </a>
-
-              <p className="mt-4 text-sm text-slate-500 leading-7">
-                報名完成後，我們將透過官方 LINE
-                與您確認付款方式、保留名額及課程通知。
-              </p>
 
             </div>
 
@@ -172,6 +239,7 @@ export default function Signup({
         </div>
 
       </div>
+
     </section>
   );
 }
