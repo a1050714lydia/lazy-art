@@ -30,7 +30,7 @@ export default function Navbar() {
             </h1>
 
             <p className="mt-1 text-xs tracking-wide text-[#8B1E2D]/80">
-              懶畫得室
+             懶得畫室
             </p>
           </div>
 
