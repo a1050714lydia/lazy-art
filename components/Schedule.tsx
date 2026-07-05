@@ -92,8 +92,8 @@ const { data, error } = await supabase
           </h2>
 
           <p className="mt-6 text-xl text-slate-600">
-            每梯僅招收 <strong>5 組家庭</strong>，
-            名額有限，依完成付款順序保留。
+          每梯僅招收 <strong>5 組家庭</strong>，
+完成報名即保留名額，取消報名後將釋出名額。
           </p>
 
         </div>

@@ -49,7 +49,7 @@ export default function Signup({
     count: "exact",
     head: true,
   })
-  .eq("payment_status", "已付款");
+  .neq("payment_status", "已取消");
 
     if (error) {
       console.error(error);
@@ -83,7 +83,7 @@ const { count: scheduleCount, error: scheduleError } = await supabase
     head: true,
   })
   .eq("schedule", selectedSchedule)
-  .eq("payment_status", "已付款");
+  .neq("payment_status", "已取消");
 
 if (scheduleError) {
   console.error(scheduleError);
