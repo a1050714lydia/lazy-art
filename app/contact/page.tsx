@@ -28,16 +28,24 @@ export default function ContactPage() {
 
           {/* 聯絡資訊 */}
           <div className="mt-16 rounded-[36px] bg-white shadow-xl p-8 md:p-12 space-y-10">
+
+            {/* 地址 */}
             <div>
               <h2 className="text-xl font-bold text-[#8B1E2D]">
                 📍 畫室地址
               </h2>
 
-              <p className="mt-3 text-slate-600 leading-8">
+              <a
+                href="https://maps.google.com/?cid=17909403056208662334"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-block text-slate-600 leading-8 hover:text-[#8B1E2D] hover:underline transition"
+              >
                 台北市中山區龍江路209巷17號2樓
-              </p>
+              </a>
             </div>
 
+            {/* LINE */}
             <div>
               <h2 className="text-xl font-bold text-[#8B1E2D]">
                 📱 LINE 官方
@@ -58,26 +66,37 @@ export default function ContactPage() {
               </a>
             </div>
 
+            {/* IG */}
             <div>
               <h2 className="text-xl font-bold text-[#8B1E2D]">
                 📸 Instagram
               </h2>
 
-              <p className="mt-3 text-slate-600 leading-8">
+              <a
+                href="https://www.instagram.com/lazyart_us"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-block text-slate-600 hover:text-[#8B1E2D] hover:underline transition"
+              >
                 @lazyart_us
-              </p>
+              </a>
             </div>
 
+            {/* Email */}
             <div>
               <h2 className="text-xl font-bold text-[#8B1E2D]">
                 📧 Email
               </h2>
 
-              <p className="mt-3 text-slate-600 leading-8">
+              <a
+                href="mailto:lazyartus@gmail.com"
+                className="mt-3 inline-block text-slate-600 hover:text-[#8B1E2D] hover:underline transition"
+              >
                 lazyartus@gmail.com
-              </p>
+              </a>
             </div>
 
+            {/* 營業時間 */}
             <div>
               <h2 className="text-xl font-bold text-[#8B1E2D]">
                 🕒 營業時間
@@ -98,18 +117,18 @@ export default function ContactPage() {
 
               <div className="overflow-hidden rounded-3xl shadow-xl border border-[#E8E2DD]">
                 <iframe
-                  src="https://www.google.com/maps?q=台北市中山區龍江路209巷17號2樓&output=embed"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7228.902706281145!2d121.53155804150845!3d25.052686780703254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd02bf948ad%3A0xf88d117cc943af3e!2z5oe25b6X55Wr5a6kIExhenkgQXJ0!5e0!3m2!1szh-TW!2stw!4v1783234406738!5m2!1szh-TW!2stw"
                   width="100%"
                   height="420"
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer-when-downgrade"
                   style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
                 />
               </div>
 
               <a
-                href="https://www.google.com/maps/search/?api=1&query=台北市中山區龍江路209巷17號2樓"
+                href="https://maps.google.com/?cid=17909403056208662334"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center mt-5 rounded-full border-2 border-[#8B1E2D] px-8 py-3 font-semibold text-[#8B1E2D] transition hover:bg-[#8B1E2D] hover:text-white"
@@ -118,7 +137,7 @@ export default function ContactPage() {
               </a>
             </div>
 
-            {/* 按鈕 */}
+            {/* 報名按鈕 */}
             <div className="pt-4">
               <Link
                 href="/signup"
@@ -127,6 +146,7 @@ export default function ContactPage() {
                 立即報名 →
               </Link>
             </div>
+
           </div>
         </section>
       </main>
