@@ -57,7 +57,9 @@ const { data, error } = await supabase
     const map: Record<string, number> = {};
 
     (data ?? []).forEach((item) => {
-      map[item.schedule] = (map[item.schedule] || 0) + 1;
+     const key = item.schedule.replace(/\s+/g, " ").trim();
+
+map[key] = (map[key] || 0) + 1;
     });
 
     setCountMap(map);
@@ -91,11 +93,10 @@ const { data, error } = await supabase
         </div>
 
         <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">{schedules.map((item) => {
+const scheduleText = `${item.date} ${item.time}`;
 
-  const scheduleText = `${item.date}　${item.time}`;
-
-  const count = countMap[scheduleText] || 0;
-
+  const count =
+  countMap[scheduleText.replace(/\s+/g, " ").trim()] || 0;
   const full = count >= 5;
 
   return (
