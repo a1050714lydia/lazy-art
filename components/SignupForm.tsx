@@ -1,4 +1,5 @@
 "use client";
+
 type Course = {
   cover_title: string | null;
 };
@@ -67,7 +68,7 @@ export default function SignupForm({
           value={parentName}
           onChange={(e) => setParentName(e.target.value)}
           placeholder="請輸入家長姓名"
-         className="w-full rounded-xl border border-gray-300 px-4 py-3 text-base"
+          className="w-full rounded-xl border border-gray-300 px-4 py-3 text-base"
         />
       </div>
 
@@ -115,91 +116,102 @@ export default function SignupForm({
           className="w-full rounded-xl border border-gray-300 px-4 py-3"
         />
       </div>
+            {/* 父親節課程專屬 */}
+      {courseInfo?.cover_title === "father" && (
+        <>
+          {/* 多一位同行 */}
+          <div className="space-y-4">
+            <label className="block text-xl font-bold">
+              多一位同行（選填）
+            </label>
 
-{/* 父親節課程專屬 */}
-{courseInfo?.cover_title === "father" && (
-  <>
-    {/* 多一位同行 */}
-    <div className="space-y-4">
-      <label className="block text-xl font-bold">
-        多一位同行（選填）
-      </label>
+            <div className="grid grid-cols-2 gap-6">
+              <button
+                type="button"
+                onClick={() => setExtraPerson(false)}
+                className={`h-24 md:h-36 rounded-3xl border-2 transition ${
+                  !extraPerson
+                    ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
+                    : "border-gray-300 bg-white hover:border-[#8B1E2D]"
+                }`}
+              >
+                <div className="flex h-full items-center justify-center">
+                  <span className="text-lg md:text-2xl font-bold">
+                    不需要
+                  </span>
+                </div>
+              </button>
 
-      <div className="grid grid-cols-2 gap-6">
-        <button
-          type="button"
-          onClick={() => setExtraPerson(false)}
-    className={`h-24 md:h-36 rounded-3xl border-2 transition ${
-            !extraPerson
-              ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
-              : "border-gray-300 bg-white hover:border-[#8B1E2D]"
-          }`}
-        >
-          <div className="flex h-full items-center justify-center">
-     <span className="text-lg md:text-2xl font-bold">  不需要</span>
+              <button
+                type="button"
+                onClick={() => setExtraPerson(true)}
+                className={`h-24 md:h-36 rounded-3xl border-2 transition ${
+                  extraPerson
+                    ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
+                    : "border-gray-300 bg-white hover:border-[#8B1E2D]"
+                }`}
+              >
+                <div className="flex h-full flex-col items-center justify-center">
+                  <span className="text-xl md:text-3xl font-black">
+                    + NT$500
+                  </span>
+                  <span className="mt-2 text-sm md:text-lg">
+                    多一位同行
+                  </span>
+                </div>
+              </button>
+            </div>
           </div>
-        </button>
 
-  <button
-  type="button"
-  onClick={() => setPolaroid(false)}
-  className={`h-24 md:h-36 rounded-3xl border-2 transition ${
-    !polaroid
-      ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
-      : "border-gray-300 bg-white hover:border-[#8B1E2D]"
-  }`}
->
-          <div className="flex h-full flex-col items-center justify-center">
-            <span className="text-xl md:text-3xl font-black">  + NT$500</span>
-           <span className="mt-2 text-sm md:text-lg">  多一位同行</span>
+          {/* 加購拍立得 */}
+          <div className="space-y-4">
+            <label className="block text-xl font-bold">
+              加購拍立得（選填）
+            </label>
+
+            <div className="grid grid-cols-2 gap-6">
+              <button
+                type="button"
+                onClick={() => setPolaroid(false)}
+                className={`h-24 md:h-36 rounded-3xl border-2 transition ${
+                  !polaroid
+                    ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
+                    : "border-gray-300 bg-white hover:border-[#8B1E2D]"
+                }`}
+              >
+                <div className="flex h-full items-center justify-center">
+                  <span className="text-lg md:text-2xl font-bold">
+                    不需要
+                  </span>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setPolaroid(true)}
+                className={`h-24 md:h-36 rounded-3xl border-2 transition ${
+                  polaroid
+                    ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
+                    : "border-gray-300 bg-white hover:border-[#8B1E2D]"
+                }`}
+              >
+                <div className="flex h-full flex-col items-center justify-center">
+                  <span className="text-xl md:text-3xl font-black">
+                    + NT$150
+                  </span>
+                  <span className="mt-2 text-sm md:text-lg">
+                    拍立得紀念照
+                  </span>
+                </div>
+              </button>
+            </div>
           </div>
-        </button>
-      </div>
-    </div>
-
-    {/* 加購拍立得 */}
-    <div className="space-y-4">
-      <label className="block text-xl font-bold">
-        加購拍立得（選填）
-      </label>
-
-      <div className="grid grid-cols-2 gap-6">
-      <button
-  type="button"
-  onClick={() => setExtraPerson(true)}
-  className={`h-24 md:h-36 rounded-3xl border-2 transition ${
-    extraPerson
-      ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
-      : "border-gray-300 bg-white hover:border-[#8B1E2D]"
-  }`}
->
-          <div className="flex h-full items-center justify-center">
-     <span className="text-lg md:text-2xl font-bold">  不需要</span>
-          </div>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setPolaroid(true)}
-          className={`h-24 md:h-36 rounded-3xl border-2 transition ${
-            polaroid
-              ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
-              : "border-gray-300 bg-white hover:border-[#8B1E2D]"
-          }`}
-        >
-          <div className="flex h-full flex-col items-center justify-center">
-           <span className="text-xl md:text-3xl font-black">+ NT$150</span>
-     <span className="mt-2 text-sm md:text-lg">拍立得紀念照</span>
-          </div>
-        </button>
-      </div>
-    </div>
-  </>
-)}
+        </>
+      )}
 
       {/* 過敏食物／其他備註 */}
       <div>
-      <label className="mb-2 block text-sm md:text-base font-semibold">
+        <label className="mb-2 block text-sm md:text-base font-semibold">
           過敏食物／其他備註（選填）
         </label>
 
@@ -210,7 +222,7 @@ export default function SignupForm({
           placeholder="例如：花生過敏、牛奶過敏、特殊需求、其他想告知老師的事項..."
           className="w-full rounded-xl border border-gray-300 px-4 py-3"
         />
- </div>
-  </div>
-
-)}
+      </div>
+    </div>
+  );
+}
