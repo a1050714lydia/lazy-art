@@ -140,14 +140,15 @@ export default function SignupForm({
           </div>
         </button>
 
-        <button
-          type="button"
-        className={`h-24 md:h-36 rounded-3xl border-2 transition ${
-            extraPerson
-              ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
-              : "border-gray-300 bg-white hover:border-[#8B1E2D]"
-          }`}
-        >
+  <button
+  type="button"
+  onClick={() => setPolaroid(false)}
+  className={`h-24 md:h-36 rounded-3xl border-2 transition ${
+    !polaroid
+      ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
+      : "border-gray-300 bg-white hover:border-[#8B1E2D]"
+  }`}
+>
           <div className="flex h-full flex-col items-center justify-center">
             <span className="text-xl md:text-3xl font-black">  + NT$500</span>
            <span className="mt-2 text-sm md:text-lg">  多一位同行</span>
@@ -163,15 +164,15 @@ export default function SignupForm({
       </label>
 
       <div className="grid grid-cols-2 gap-6">
-        <button
-          type="button"
-          onClick={() => setPolaroid(false)}
-      className={`h-24 md:h-36 rounded-3xl border-2 transition ${
-            !polaroid
-              ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
-              : "border-gray-300 bg-white hover:border-[#8B1E2D]"
-          }`}
-        >
+      <button
+  type="button"
+  onClick={() => setExtraPerson(true)}
+  className={`h-24 md:h-36 rounded-3xl border-2 transition ${
+    extraPerson
+      ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
+      : "border-gray-300 bg-white hover:border-[#8B1E2D]"
+  }`}
+>
           <div className="flex h-full items-center justify-center">
      <span className="text-lg md:text-2xl font-bold">  不需要</span>
           </div>
