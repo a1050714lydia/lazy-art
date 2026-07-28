@@ -16,7 +16,11 @@ type Course = {
   id: string;
   title: string;
   subtitle: string | null;
+
   price: number | null;
+  early_bird_price: number | null;
+  early_bird_remaining: number | null;
+
   duration: string | null;
   materials: string | null;
   target_age: string | null;
@@ -80,17 +84,19 @@ export default function Signup({
       .from("course_schedules")
       .select(`
         *,
-        courses (
-          id,
-          title,
-          subtitle,
-          price,
-          duration,
-          materials,
-          target_age,
-          notice,
-          cover_title
-        )
+       courses (
+  id,
+  title,
+  subtitle,
+  price,
+  early_bird_price,
+  early_bird_remaining,
+  duration,
+  materials,
+  target_age,
+  notice,
+  cover_title
+)
       `)
       .eq("id", selectedSchedule)
       .single();
@@ -118,7 +124,16 @@ if (error || !data) {
       `${schedule.start_time.slice(0,5)}－${schedule.end_time.slice(0,5)}`
     );
 
-    setPrice(schedule.courses.price ?? 0);
+const earlyBirdRemaining =
+  schedule.courses.early_bird_remaining ?? 0;
+
+const basePrice =
+  earlyBirdRemaining > 0 &&
+  schedule.courses.early_bird_price != null
+    ? schedule.courses.early_bird_price
+    : schedule.courses.price;
+
+setPrice(basePrice ?? 0);
     setRemaining(schedule.remaining);
   }
     async function handleSubmit() {
