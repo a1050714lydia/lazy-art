@@ -1,26 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
 import Navbar from "@/components/Navbar";
-import Schedule from "@/components/Schedule";
 import Signup from "@/components/Signup";
 import Footer from "@/components/Footer";
 
-export default function SchedulePage() {
-  const [selectedSchedule, setSelectedSchedule] = useState("");
+function SignupContent() {
+  const searchParams = useSearchParams();
 
+  const scheduleId =
+    searchParams.get("schedule") ?? "";
+
+  return (
+    <main className="pt-24 md:pt-28">
+      <Signup selectedSchedule={scheduleId} />
+    </main>
+  );
+}
+
+export default function SchedulePage() {
   return (
     <>
       <Navbar />
 
-      <main className="pt-24 md:pt-28 overflow-x-hidden">
-        <Schedule onSelect={setSelectedSchedule} />
-
-        <Signup
-          selectedSchedule={selectedSchedule}
-        />
-      </main>
+      <Suspense fallback={null}>
+        <SignupContent />
+      </Suspense>
 
       <Footer />
     </>

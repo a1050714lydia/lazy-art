@@ -71,7 +71,7 @@ export default function Pricing() {
 
             <div className="mt-8">
               <Link
-                href="/signup"
+      href="/schedule"
                 prefetch={false}
                 className="block w-full rounded-full bg-[#8B1E2D] py-4 text-center text-lg font-bold text-white transition duration-300 hover:bg-[#721825]"
               >

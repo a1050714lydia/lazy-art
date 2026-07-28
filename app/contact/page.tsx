@@ -140,7 +140,7 @@ export default function ContactPage() {
             {/* 報名按鈕 */}
             <div className="pt-4">
               <Link
-                href="/signup"
+   href="/schedule"
                 className="block w-full rounded-full bg-[#8B1E2D] py-5 text-center text-xl font-bold text-white transition hover:bg-[#721825]"
               >
                 立即報名 →
