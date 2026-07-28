@@ -67,7 +67,7 @@ export default function SignupForm({
           value={parentName}
           onChange={(e) => setParentName(e.target.value)}
           placeholder="請輸入家長姓名"
-          className="w-full rounded-xl border border-gray-300 px-4 py-3"
+         className="w-full rounded-xl border border-gray-300 px-4 py-3 text-base"
         />
       </div>
 
@@ -129,29 +129,28 @@ export default function SignupForm({
         <button
           type="button"
           onClick={() => setExtraPerson(false)}
-          className={`h-36 rounded-3xl border-2 transition ${
+    className={`h-24 md:h-36 rounded-3xl border-2 transition ${
             !extraPerson
               ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
               : "border-gray-300 bg-white hover:border-[#8B1E2D]"
           }`}
         >
           <div className="flex h-full items-center justify-center">
-            <span className="text-2xl font-bold">不需要</span>
+     <span className="text-lg md:text-2xl font-bold"></span>
           </div>
         </button>
 
         <button
           type="button"
-          onClick={() => setExtraPerson(true)}
-          className={`h-36 rounded-3xl border-2 transition ${
+        className={`h-24 md:h-36 rounded-3xl border-2 transition ${
             extraPerson
               ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
               : "border-gray-300 bg-white hover:border-[#8B1E2D]"
           }`}
         >
           <div className="flex h-full flex-col items-center justify-center">
-            <span className="text-3xl font-black">+ NT$500</span>
-            <span className="mt-2 text-lg">多一位同行</span>
+            <span className="text-xl md:text-3xl font-black"></span>
+           <span className="mt-2 text-sm md:text-lg"></span>
           </div>
         </button>
       </div>
@@ -174,7 +173,7 @@ export default function SignupForm({
           }`}
         >
           <div className="flex h-full items-center justify-center">
-            <span className="text-2xl font-bold">不需要</span>
+     <span className="text-lg md:text-2xl font-bold"></span>
           </div>
         </button>
 
@@ -188,8 +187,8 @@ export default function SignupForm({
           }`}
         >
           <div className="flex h-full flex-col items-center justify-center">
-            <span className="text-3xl font-black">+ NT$150</span>
-            <span className="mt-2 text-lg">拍立得紀念照</span>
+           <span className="text-xl md:text-3xl font-black"></span>
+     <span className="mt-2 text-sm md:text-lg">拍立得紀念照</span>
           </div>
         </button>
       </div>
@@ -199,7 +198,7 @@ export default function SignupForm({
 
       {/* 過敏食物／其他備註 */}
       <div>
-        <label className="mb-2 block font-semibold">
+      <label className="mb-2 block text-sm md:text-base font-semibold">
           過敏食物／其他備註（選填）
         </label>
 

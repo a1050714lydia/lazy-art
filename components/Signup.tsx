@@ -265,7 +265,7 @@ NT$${totalPrice}
             立即報名
           </h2>
 
-          <p className="mt-6 text-xl leading-relaxed text-slate-600">
+       <p className="mt-4 text-base md:text-xl leading-relaxed text-slate-600">
             填寫以下資料，我們會盡快與您聯繫。
           </p>
         </div>
