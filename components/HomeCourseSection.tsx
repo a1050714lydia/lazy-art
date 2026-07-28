@@ -183,12 +183,12 @@ export default async function HomeCourseSection() {
                   查看課程
                 </Link>
 
-                <Link
-                  href={`/schedule?course=${course.slug}`}
-                  className="flex-1 rounded-full bg-[#8B1E2D] py-3 text-center font-semibold text-white transition hover:opacity-90"
-                >
-                  立即報名
-                </Link>
+               <Link
+  href={`/course/${course.slug}`}
+  className="inline-flex items-center rounded-full border border-[#8B1E2D] px-6 py-3 font-semibold text-[#8B1E2D] transition hover:bg-[#8B1E2D] hover:text-white"
+>
+  了解更多 →
+</Link>
 
               </div>
 
