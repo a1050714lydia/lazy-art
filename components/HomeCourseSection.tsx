@@ -124,71 +124,17 @@ export default async function HomeCourseSection() {
                 {course.title}
               </h3>
 
-              <p className="mt-4 text-slate-600 line-clamp-3">
+             <p className="mt-4 text-lg leading-8 text-slate-600 line-clamp-2">
                 {course.description}
               </p>
 
-              <div className="mt-8 space-y-3 text-[15px] text-slate-700">
-
-                {course.start_date && (
-                  <div className="flex items-center gap-2">
-                    <span>📅</span>
-                    <span>{course.start_date}</span>
-                  </div>
-                )}
-
-                {course.class_time && (
-                  <div className="flex items-center gap-2">
-                    <span>🕒</span>
-                    <span>{course.class_time}</span>
-                  </div>
-                )}
-
-                {course.duration && (
-                  <div className="flex items-center gap-2">
-                    <span>🎨</span>
-                    <span>{course.duration}</span>
-                  </div>
-                )} 
-                                {course.price && (
-                  <div className="flex items-center gap-2">
-                    <span>💰</span>
-                    <span className="font-bold text-[#8B1E2D]">
-                      NT$ {course.price.toLocaleString()}
-                    </span>
-                  </div>
-                )}
-
-                {course.price_note && (
-                  <p className="rounded-xl bg-[#FAF8F5] p-4 text-sm leading-6 text-slate-600">
-                    {course.price_note}
-                  </p>
-                )}
-
-                <div className="flex items-center gap-2">
-                  <span>👥</span>
-                  <span>
-                    剩餘 <strong>{remaining}</strong> 個名額
-                  </span>
-                </div>
-
-              </div>
-
-              <div className="mt-8 flex gap-4">
-
-                <Link
-                  href={`/course/${course.slug}`}
-                  className="flex-1 rounded-full border-2 border-[#8B1E2D] py-3 text-center font-semibold text-[#8B1E2D] transition hover:bg-[#8B1E2D] hover:text-white"
-                >
-                  查看課程
-                </Link>
-
-               <Link
-  href={`/course/${course.slug}`}
-  className="inline-flex items-center rounded-full border border-[#8B1E2D] px-6 py-3 font-semibold text-[#8B1E2D] transition hover:bg-[#8B1E2D] hover:text-white"
->
-  了解更多 →
-</Link>
+             <div className="mt-10">
+  <Link
+    href={`/course/${course.slug}`}
+    className="flex w-full items-center justify-center rounded-full bg-[#8B1E2D] py-4 text-lg font-semibold text-white transition hover:bg-[#741826]"
+  >
+    了解更多 →
+  </Link>
 
               </div>
 
