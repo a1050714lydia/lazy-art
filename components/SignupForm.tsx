@@ -136,7 +136,7 @@ export default function SignupForm({
           }`}
         >
           <div className="flex h-full items-center justify-center">
-     <span className="text-lg md:text-2xl font-bold"></span>
+     <span className="text-lg md:text-2xl font-bold">  不需要</span>
           </div>
         </button>
 
@@ -149,8 +149,8 @@ export default function SignupForm({
           }`}
         >
           <div className="flex h-full flex-col items-center justify-center">
-            <span className="text-xl md:text-3xl font-black"></span>
-           <span className="mt-2 text-sm md:text-lg"></span>
+            <span className="text-xl md:text-3xl font-black">  + NT$500</span>
+           <span className="mt-2 text-sm md:text-lg">  多一位同行</span>
           </div>
         </button>
       </div>
@@ -166,28 +166,28 @@ export default function SignupForm({
         <button
           type="button"
           onClick={() => setPolaroid(false)}
-          className={`h-36 rounded-3xl border-2 transition ${
+      className={`h-24 md:h-36 rounded-3xl border-2 transition ${
             !polaroid
               ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
               : "border-gray-300 bg-white hover:border-[#8B1E2D]"
           }`}
         >
           <div className="flex h-full items-center justify-center">
-     <span className="text-lg md:text-2xl font-bold"></span>
+     <span className="text-lg md:text-2xl font-bold">  不需要</span>
           </div>
         </button>
 
         <button
           type="button"
           onClick={() => setPolaroid(true)}
-          className={`h-36 rounded-3xl border-2 transition ${
+          className={`h-24 md:h-36 rounded-3xl border-2 transition ${
             polaroid
               ? "border-[#8B1E2D] bg-[#8B1E2D] text-white"
               : "border-gray-300 bg-white hover:border-[#8B1E2D]"
           }`}
         >
           <div className="flex h-full flex-col items-center justify-center">
-           <span className="text-xl md:text-3xl font-black"></span>
+           <span className="text-xl md:text-3xl font-black">+ NT$150</span>
      <span className="mt-2 text-sm md:text-lg">拍立得紀念照</span>
           </div>
         </button>
