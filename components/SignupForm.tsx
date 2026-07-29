@@ -139,7 +139,7 @@ setPhone,
           {/* 多一位同行 */}
           <div className="space-y-4">
             <label className="block text-xl font-bold">
-              多一位同行（選填）
+              多一位同行
             </label>
 
             <div className="grid grid-cols-2 gap-6">
