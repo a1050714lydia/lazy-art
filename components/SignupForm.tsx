@@ -10,7 +10,8 @@ type Props = {
 
   parentName: string;
   setParentName: (v: string) => void;
-
+email: string;
+setEmail: (v: string) => void;
   phone: string;
   setPhone: (v: string) => void;
 
@@ -34,11 +35,14 @@ export default function SignupForm({
   courseInfo,
   courseTitle,
 
-  parentName,
-  setParentName,
+ parentName,
+setParentName,
 
-  phone,
-  setPhone,
+email,
+setEmail,
+
+phone,
+setPhone,
 
   lineId,
   setLineId,

@@ -42,8 +42,9 @@ type Schedule = {
 export default function Signup({
   selectedSchedule,
 }: SignupProps) {
-  const [parentName, setParentName] = useState("");
-  const [phone, setPhone] = useState("");
+const [parentName, setParentName] = useState("");
+const [email, setEmail] = useState("");
+const [phone, setPhone] = useState("");
   const [lineId, setLineId] = useState("");
   const [childName, setChildName] = useState("");
   const [note, setNote] = useState("");
@@ -142,7 +143,7 @@ setPrice(basePrice ?? 0);
       return;
     }
 
-    if (!parentName || !phone || !childName) {
+   if (!parentName || !email || !phone || !childName) {
       alert("請填寫完整資料");
       return;
     }
@@ -178,7 +179,8 @@ setPrice(basePrice ?? 0);
           schedule: scheduleTitle,
 
           parent_name: parentName,
-          phone,
+email,
+phone,
           line_id: lineId,
           child_name: childName,
           note,
@@ -200,6 +202,17 @@ setPrice(basePrice ?? 0);
       alert(insertError.message);
       return;
     }
+    await fetch("/api/send-email", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    email,
+    parentName,
+    courseName: courseTitle,
+  }),
+});
 
     const { error: updateError } = await supabase
       .from("course_schedules")
@@ -295,6 +308,8 @@ NT$${totalPrice}
             setExtraPerson={setExtraPerson}
             polaroid={polaroid}
             setPolaroid={setPolaroid}
+            email={email}
+            setEmail={setEmail}
           />
 
           <PriceCard
