@@ -75,7 +75,20 @@ setPhone,
           className="w-full rounded-xl border border-gray-300 px-4 py-3 text-base"
         />
       </div>
+{/* Email */}
+<div>
+  <label className="mb-2 block font-semibold">
+    Email
+  </label>
 
+  <input
+    type="email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    placeholder="example@gmail.com"
+    className="w-full rounded-xl border border-gray-300 px-4 py-3"
+  />
+</div>
       {/* 電話 */}
       <div>
         <label className="mb-2 block font-semibold">
@@ -94,7 +107,7 @@ setPhone,
       {/* LINE */}
       <div>
         <label className="mb-2 block font-semibold">
-          LINE ID（選填）
+          LINE ID
         </label>
 
         <input
