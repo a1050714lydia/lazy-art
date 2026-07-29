@@ -41,7 +41,7 @@ export default async function HomeCourseSection() {
   if (courses.length === 0) return null;
 
   return (
-    <section className="bg-[#FAF8F5] py-24">
+    <section className="bg-[#FAF8F5] py-20">
       <div className="mx-auto max-w-6xl px-6">
 
         {/* 標題 */}
@@ -50,19 +50,13 @@ export default async function HomeCourseSection() {
             CURRENT WORKSHOPS
           </p>
 
-          <h2 className="mt-4 text-5xl font-black text-slate-900">
+          <h2 className="mt-4 text-4xl font-black text-slate-900 md:text-5xl">
             當期課程
           </h2>
-
-          <p className="mx-auto mt-6 max-w-2xl text-xl leading-9 text-slate-500">
-            每一堂課，都是一次自由創作的開始。
-            <br />
-            陪伴孩子探索藝術、想像與創造力。
-          </p>
         </div>
 
         {/* 課程 */}
-        <div className="mt-24 space-y-24">
+        <div className="mt-16 space-y-20">
           {courses.map((course) => (
             <div
               key={course.id}
@@ -74,11 +68,11 @@ export default async function HomeCourseSection() {
                   {course.subtitle}
                 </p>
 
-                <h3 className="mt-5 text-5xl font-black text-slate-900">
+                <h3 className="mt-5 text-4xl font-black text-slate-900 md:text-5xl">
                   {course.title}
                 </h3>
 
-                <p className="mx-auto mt-8 max-w-2xl text-xl leading-10 text-slate-600">
+                <p className="mx-auto mt-8 max-w-2xl text-lg leading-9 text-slate-600">
                   {course.description}
                 </p>
 
