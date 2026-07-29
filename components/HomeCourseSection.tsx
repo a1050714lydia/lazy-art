@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -13,17 +12,8 @@ type Course = {
   title: string;
   subtitle: string;
   description: string;
-  cover: string;
-  badge: string | null;
-  start_date: string | null;
-  class_time: string | null;
-  duration: string | null;
   price: number | null;
-  price_note: string | null;
   sort_order: number | null;
-  course_schedules: {
-    remaining: number;
-  }[];
 };
 
 export default async function HomeCourseSection() {
@@ -35,17 +25,8 @@ export default async function HomeCourseSection() {
       title,
       subtitle,
       description,
-      cover,
-      badge,
-      start_date,
-      class_time,
-      duration,
       price,
-      price_note,
-      sort_order,
-      course_schedules(
-        remaining
-      )
+      sort_order
     `)
     .eq("active", true)
     .order("sort_order", { ascending: true });
@@ -57,97 +38,77 @@ export default async function HomeCourseSection() {
 
   const courses = (data ?? []) as Course[];
 
-  if (courses.length === 0) {
-    return null;
-  }
+  if (courses.length === 0) return null;
 
   return (
-   <section className="bg-[#FAF8F5] py-24">
-  <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-[#FAF8F5] py-24">
+      <div className="mx-auto max-w-6xl px-6">
 
-    <div className="text-center">
+        {/* 標題 */}
+        <div className="text-center">
+          <p className="font-semibold uppercase tracking-[0.3em] text-[#8B1E2D]">
+            CURRENT WORKSHOPS
+          </p>
 
-      <p className="font-semibold uppercase tracking-[0.25em] text-[#8B1E2D]">
-        CURRENT COURSES
-      </p>
+          <h2 className="mt-4 text-5xl font-black text-slate-900">
+            當期課程
+          </h2>
 
-      <h2 className="mt-4 text-5xl font-black text-slate-900">
-        當期課程
-      </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-xl leading-9 text-slate-500">
+            每一堂課，都是一次自由創作的開始。
+            <br />
+            陪伴孩子探索藝術、想像與創造力。
+          </p>
+        </div>
 
-      <p className="mt-6 text-xl text-slate-500">
-        選擇喜歡的課程，開始孩子的藝術旅程。
-      </p>
+        {/* 課程 */}
+        <div className="mt-24 space-y-24">
+          {courses.map((course) => (
+            <div
+              key={course.id}
+              className="mx-auto max-w-3xl border-b border-[#E7E0D8] pb-20 last:border-0"
+            >
+              <div className="text-center">
 
-    </div>
+                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#8B1E2D]">
+                  {course.subtitle}
+                </p>
 
-    <div className="mt-16 grid gap-10 md:grid-cols-2">
+                <h3 className="mt-5 text-5xl font-black text-slate-900">
+                  {course.title}
+                </h3>
 
-      {courses.map((course) => {
+                <p className="mx-auto mt-8 max-w-2xl text-xl leading-10 text-slate-600">
+                  {course.description}
+                </p>
 
-        const remaining =
-          course.course_schedules?.reduce(
-            (sum, item) => sum + (item.remaining ?? 0),
-            0
-          ) ?? 0;
+                {course.price && (
+                  <div className="mt-10">
+                    <p className="text-sm uppercase tracking-[0.25em] text-slate-400">
+                      PRICE
+                    </p>
 
-        return (
-          <div
-            key={course.id}
-            className="overflow-hidden rounded-[32px] bg-white shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
-          >
+                    <p className="mt-2 text-4xl font-black text-[#8B1E2D]">
+                      NT$ {course.price.toLocaleString()}
+                    </p>
+                  </div>
+                )}
 
-            <div className="relative aspect-[4/3]">
-
-              <Image
-                src={course.cover}
-                alt={course.title}
-                fill
-                className="object-cover"
-              />
-
-              {course.badge && (
-                <div className="absolute left-5 top-5 rounded-full bg-[#8B1E2D] px-4 py-2 text-sm font-bold text-white">
-                  {course.badge}
+                <div className="mt-12">
+                  <Link
+                    href={`/course/${course.slug}`}
+                    className="inline-flex items-center rounded-full bg-[#8B1E2D] px-10 py-4 text-lg font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#741826] hover:shadow-lg"
+                  >
+                    了解更多 →
+                  </Link>
                 </div>
-              )}
-
-            </div>
-
-            <div className="p-8">
-
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8B1E2D]">
-                {course.subtitle}
-              </p>
-
-              <h3 className="mt-2 text-3xl font-bold text-slate-900">
-                {course.title}
-              </h3>
-
-             <p className="mt-4 text-lg leading-8 text-slate-600 line-clamp-2">
-                {course.description}
-              </p>
-
-             <div className="mt-10">
-  <Link
-    href={`/course/${course.slug}`}
-    className="flex w-full items-center justify-center rounded-full bg-[#8B1E2D] py-4 text-lg font-semibold text-white transition hover:bg-[#741826]"
-  >
-    了解更多 →
-  </Link>
 
               </div>
-
             </div>
+          ))}
+        </div>
 
-          </div>
-        );
-      })}
-
-    </div>
-
-  </div>
-</section>
+      </div>
+    </section>
   );
 }
-  

@@ -8,8 +8,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
-      <div className="max-w-7xl mx-auto h-20 md:h-24 px-5 md:px-8 flex items-center justify-between">
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-100 bg-white/90 shadow-sm backdrop-blur-md">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:h-24 md:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
           <Image
@@ -18,11 +18,11 @@ export default function Navbar() {
             width={55}
             height={55}
             priority
-            className="w-12 h-12 md:w-14 md:h-14 object-contain"
+            className="h-12 w-12 object-contain md:h-14 md:w-14"
           />
 
           <div>
-            <h1 className="text-2xl md:text-3xl font-black leading-none text-[#8B1E2D]">
+            <h1 className="text-2xl font-black leading-none text-[#8B1E2D] md:text-3xl">
               Lazy Art
             </h1>
 
@@ -33,44 +33,30 @@ export default function Navbar() {
         </Link>
 
         {/* 桌機版 */}
-        <nav className="hidden lg:flex items-center gap-8 text-[15px] font-medium text-slate-700">
-          <Link href="/about" className="hover:text-[#8B1E2D] transition">
+        <nav className="hidden items-center gap-8 text-[15px] font-medium text-slate-700 lg:flex">
+          <Link href="/about" className="transition hover:text-[#8B1E2D]">
             關於畫室
           </Link>
 
-          <Link href="/course" className="hover:text-[#8B1E2D] transition">
+          <Link href="/course" className="transition hover:text-[#8B1E2D]">
             課程介紹
           </Link>
 
-          <Link href="/teachers" className="hover:text-[#8B1E2D] transition">
+          <Link href="/teachers" className="transition hover:text-[#8B1E2D]">
             師資介紹
           </Link>
 
-          <Link href="/classroom" className="hover:text-[#8B1E2D] transition">
+          <Link href="/classroom" className="transition hover:text-[#8B1E2D]">
             教室環境
           </Link>
 
-          <Link href="/contact" className="hover:text-[#8B1E2D] transition">
+          <Link href="/contact" className="transition hover:text-[#8B1E2D]">
             聯絡我們
-          </Link>
-
-          <Link
-            href="/schedule"
-            className="rounded-full bg-[#8B1E2D] px-6 py-3 text-white hover:bg-[#721825] transition"
-          >
-            立即報名
           </Link>
         </nav>
 
         {/* 手機版 */}
-        <div className="flex lg:hidden items-center gap-3">
-          <Link
-         href="/schedule"
-            className="rounded-full bg-[#8B1E2D] px-4 py-2 text-sm font-semibold text-white"
-          >
-            報名
-          </Link>
-
+        <div className="flex items-center lg:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="text-3xl text-[#8B1E2D]"
@@ -83,7 +69,7 @@ export default function Navbar() {
 
       {/* 手機選單 */}
       {menuOpen && (
-        <div className="lg:hidden bg-white border-t shadow-md">
+        <div className="border-t bg-white shadow-md lg:hidden">
           <nav className="flex flex-col py-2">
             <Link
               href="/about"
@@ -123,14 +109,6 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
             >
               聯絡我們
-            </Link>
-
-            <Link
-             href="/schedule"
-              className="mx-6 mt-2 mb-3 rounded-full bg-[#8B1E2D] py-3 text-center font-semibold text-white"
-              onClick={() => setMenuOpen(false)}
-            >
-              立即報名
             </Link>
           </nav>
         </div>
