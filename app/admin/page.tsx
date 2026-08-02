@@ -114,7 +114,8 @@ const { error } = await supabase
   .eq("id", item.id);
 
 if (error) {
-  console.error(error);
+  console.log(error);
+  alert(JSON.stringify(error));
   alert("恢復失敗");
   return;
 }
