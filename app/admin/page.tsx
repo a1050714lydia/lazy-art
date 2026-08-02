@@ -266,7 +266,7 @@ const cancelCount = filteredList.filter(
                       📅 {item.schedule}
                     </p>
                     <p className="mt-1 text-slate-600">
-  📚 {item.courses.title}
+📚 {item.courses?.title ?? "未指定課程"}
 </p>
                   </div>
 
@@ -279,7 +279,7 @@ const cancelCount = filteredList.filter(
                   </div>
                 </div>
 
-               {item.courses.cover_title === "father" && (
+             {item.courses?.cover_title === "father" && (
   <div className="mt-6 flex flex-wrap gap-3">
     <span className="rounded-full bg-[#FAF7F2] px-4 py-2">
       {item.polaroid
