@@ -235,7 +235,9 @@ try {
 
     setLoading(false);
 
-    alert(`🎉 報名成功！
+const successMessage =
+  courseInfo?.cover_title === "father"
+    ? `🎉 報名成功！
 
 課程：
 ${courseTitle}
@@ -258,8 +260,27 @@ ${polaroid ? "有 (+150)" : "沒有"}
 總金額：
 NT$${totalPrice}
 
-請加入官方 LINE 完成付款。`);
+請加入官方 LINE 完成付款。`
+    : `🎉 報名成功！
 
+課程：
+${courseTitle}
+
+梯次：
+${scheduleTitle}
+
+時間：
+${scheduleTime}
+
+課程費：
+NT$${price}
+
+總金額：
+NT$${totalPrice}
+
+請加入官方 LINE 完成付款。`;
+
+alert(successMessage);
     setParentName("");
     setPhone("");
     setLineId("");
