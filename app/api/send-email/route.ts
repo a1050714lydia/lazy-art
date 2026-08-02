@@ -1,18 +1,32 @@
-
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
+    console.log("📨 收到寄信 API");
+
     const { email, parentName, courseName } = await req.json();
+
+    console.log("Email：", email);
+    console.log("家長：", parentName);
+    console.log("課程：", courseName);
+
+    if (!email) {
+      return Response.json(
+        { message: "沒有收到 Email" },
+        { status: 400 }
+      );
+    }
 
     const { data, error } = await resend.emails.send({
       from: "Lazy Art <onboarding@resend.dev>",
       to: email,
       subject: "🎨 Lazy Art｜報名成功通知",
+
       html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:32px;background:#ffffff;border-radius:12px;border:1px solid #eee;">
+
         <h2 style="color:#8B1E2D;">🎨 Lazy Art 懶得畫室</h2>
 
         <p>親愛的 <strong>${parentName}</strong> 您好：</p>
@@ -42,7 +56,7 @@ export async function POST(req: Request) {
         <p>
           完成匯款／轉帳後，
           請加入官方 LINE，
-          並提供以下資訊：
+          並提供：
         </p>
 
         <ul>
@@ -54,7 +68,14 @@ export async function POST(req: Request) {
         <p>
           <a
             href="https://lin.ee/UPkos4l"
-            style="display:inline-block;padding:12px 20px;background:#8B1E2D;color:white;text-decoration:none;border-radius:999px;"
+            style="
+              display:inline-block;
+              padding:12px 20px;
+              background:#8B1E2D;
+              color:white;
+              text-decoration:none;
+              border-radius:999px;
+            "
           >
             加入官方 LINE
           </a>
@@ -62,33 +83,38 @@ export async function POST(req: Request) {
 
         <hr style="margin:24px 0;" />
 
-        <p>
-          如有任何問題，
-          歡迎透過官方 LINE 與我們聯繫。
-        </p>
-
-        <p>
-          期待與您及孩子在課堂上見面！
-        </p>
+        <p>期待與您及孩子在課堂上見面！</p>
 
         <p style="margin-top:32px;">
           <strong>Lazy Art 懶得畫室</strong>
         </p>
+
       </div>
       `,
     });
 
+    console.log("Resend data：", data);
+    console.log("Resend error：", error);
+
     if (error) {
-      console.error(error);
       return Response.json(error, { status: 400 });
     }
 
-    return Response.json(data);
+    return Response.json({
+      success: true,
+      data,
+    });
   } catch (err) {
-    console.error(err);
+    console.error("寄信失敗：", err);
+
     return Response.json(
-      { message: "寄送失敗" },
-      { status: 500 }
+      {
+        success: false,
+        message: "寄信失敗",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }

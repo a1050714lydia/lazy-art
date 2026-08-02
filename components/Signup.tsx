@@ -142,11 +142,10 @@ setPrice(basePrice ?? 0);
       alert("請先選擇課程梯次");
       return;
     }
-
-   if (!parentName || !email || !phone || !childName) {
-      alert("請填寫完整資料");
-      return;
-    }
+if (!parentName || !email || !phone || !lineId || !childName) {
+  alert("請填寫完整資料");
+  return;
+}
 
     setLoading(true);
 
@@ -202,18 +201,25 @@ phone,
       alert(insertError.message);
       return;
     }
-    await fetch("/api/send-email", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email,
-    parentName,
-    courseName: courseTitle,
-  }),
-});
+try {
+  const res = await fetch("/api/send-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      parentName,
+      courseName: courseTitle,
+    }),
+  });
 
+  const result = await res.json();
+
+  console.log("寄信結果：", result);
+} catch (err) {
+  console.error("寄信失敗：", err);
+}
     const { error: updateError } = await supabase
       .from("course_schedules")
       .update({
@@ -259,7 +265,7 @@ NT$${totalPrice}
     setLineId("");
     setChildName("");
     setNote("");
-
+    setEmail("");
     setExtraPerson(false);
     setPolaroid(false);
   }
