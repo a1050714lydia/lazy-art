@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 
 type Registration = {
   id: string;
+  schedule_id: string; //
   created_at: string;
   schedule: string;
   parent_name: string;
@@ -30,7 +31,22 @@ const [selectedCourse, setSelectedCourse] = useState<
   useEffect(() => {
     loadData();
   }, []);
+async function updateRemaining(scheduleId: string, diff: number) {
+  const { data, error } = await supabase
+    .from("course_schedules")
+    .select("remaining")
+    .eq("id", scheduleId)
+    .single();
 
+  if (error || !data) return;
+
+  await supabase
+    .from("course_schedules")
+    .update({
+      remaining: Math.max(0, data.remaining + diff),
+    })
+    .eq("id", scheduleId);
+}
   async function loadData() {
     setLoading(true);
 
@@ -94,43 +110,46 @@ const [selectedCourse, setSelectedCourse] = useState<
     loadData();
   }
 
-  async function cancelRegistration(id: string) {
+async function cancelRegistration(item: Registration){
     if (!confirm("確定取消這筆報名？")) return;
+const { error } = await supabase
+  .from("registrations")
+  .update({
+ payment_status: "已取消",
+    paid: false,
+  })
+  .eq("id", item.id);
 
-    const { error } = await supabase
-      .from("registrations")
-      .update({
-        payment_status: "已取消",
-        paid: false,
-      })
-      .eq("id", id);
+if (error) {
+  console.error(error);
+  alert("恢復失敗");
+  return;
+}
 
-    if (error) {
-      console.error(error);
-      alert("取消失敗");
-      return;
-    }
+await updateRemaining(item.schedule_id, -1);
 
-    loadData();
+loadData();
+}
+
+async function restoreRegistration(item: Registration) {
+  const { error } = await supabase
+    .from("registrations")
+    .update({
+      payment_status: "待付款",
+      paid: false,
+    })
+    .eq("id", item.id);
+
+  if (error) {
+    console.error(error);
+    alert("恢復失敗");
+    return;
   }
 
-  async function restoreRegistration(id: string) {
-    const { error } = await supabase
-      .from("registrations")
-      .update({
-        payment_status: "待付款",
-        paid: false,
-      })
-      .eq("id", id);
+  await updateRemaining(item.schedule_id, -1);
 
-    if (error) {
-      console.error(error);
-      alert("恢復失敗");
-      return;
-    }
-
-    loadData();
-  }
+  loadData();
+}
 const filteredList =
   selectedCourse === "all"
     ? list
@@ -161,11 +180,44 @@ const cancelCount = filteredList.filter(
         <p className="mt-3 text-slate-500">
         共 {filteredList.length} 筆報名資料
         </p>
+<div className="mt-8 mb-6 flex gap-3">
+  <button
+    onClick={() => setSelectedCourse("all")}
+    className={`rounded-full px-5 py-2 ${
+      selectedCourse === "all"
+        ? "bg-[#8B1E2D] text-white"
+        : "border bg-white"
+    }`}
+  >
+    全部
+  </button>
 
+  <button
+    onClick={() => setSelectedCourse("father")}
+    className={`rounded-full px-5 py-2 ${
+      selectedCourse === "father"
+        ? "bg-[#8B1E2D] text-white"
+        : "border bg-white"
+    }`}
+  >
+    👨 父親節
+  </button>
+
+  <button
+    onClick={() => setSelectedCourse("clay")}
+    className={`rounded-full px-5 py-2 ${
+      selectedCourse === "clay"
+        ? "bg-[#8B1E2D] text-white"
+        : "border bg-white"
+    }`}
+  >
+    🐳 海洋黏土
+  </button>
+</div>
         <div className="mt-8 grid gap-4 md:grid-cols-4">
           <div className="rounded-3xl bg-white p-6 shadow">
             <p className="text-slate-500">總報名</p>
-            <p className="mt-2 text-3xl font-black">{list.length}</p>
+            <p className="mt-2 text-3xl font-black">{filteredList.length}</p>
           </div>
 
           <div className="rounded-3xl bg-green-50 p-6 shadow">
@@ -196,7 +248,7 @@ const cancelCount = filteredList.filter(
           </div>
         ) : (
           <div className="mt-10 space-y-6">
-            {list.map((item) => (
+           {filteredList.map((item) => (
               <div
                 key={item.id}
                 className="rounded-3xl border border-[#E8D7D9] bg-white p-8 shadow-lg transition hover:shadow-xl"
@@ -218,6 +270,9 @@ const cancelCount = filteredList.filter(
                     <p className="mt-1 text-slate-600">
                       📅 {item.schedule}
                     </p>
+                    <p className="mt-1 text-slate-600">
+  📚 {item.courses.title}
+</p>
                   </div>
 
                   <div className="text-right">
@@ -229,19 +284,21 @@ const cancelCount = filteredList.filter(
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <span className="rounded-full bg-[#FAF7F2] px-4 py-2">
-                    {item.polaroid
-                      ? "📸 已加購拍立得"
-                      : "📸 未加購拍立得"}
-                  </span>
+               {item.courses.cover_title === "father" && (
+  <div className="mt-6 flex flex-wrap gap-3">
+    <span className="rounded-full bg-[#FAF7F2] px-4 py-2">
+      {item.polaroid
+        ? "📸 已加購拍立得"
+        : "📸 未加購拍立得"}
+    </span>
 
-                  <span className="rounded-full bg-[#FAF7F2] px-4 py-2">
-                    {item.extra_person
-                      ? "👨‍👩‍👧 多一位同行"
-                      : "👨‍👩‍👧 1 大 1 小"}
-                  </span>
-                </div>
+    <span className="rounded-full bg-[#FAF7F2] px-4 py-2">
+      {item.extra_person
+        ? "👨‍👩‍👧 多一位同行"
+        : "👨‍👩‍👧 1 大 1 小"}
+    </span>
+  </div>
+)}
 
                 <div className="mt-6">
                   <span
@@ -278,14 +335,14 @@ const cancelCount = filteredList.filter(
 
                   {item.payment_status !== "已取消" ? (
                     <button
-                      onClick={() => cancelRegistration(item.id)}
+                  onClick={() => cancelRegistration(item)}
                       className="rounded-full bg-red-600 px-6 py-3 font-semibold text-white transition hover:bg-red-700"
                     >
                       ✕ 取消報名
                     </button>
                   ) : (
                     <button
-                      onClick={() => restoreRegistration(item.id)}
+                onClick={() => restoreRegistration(item)}
                       className="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
                     >
                       ↩ 恢復報名
