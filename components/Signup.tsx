@@ -220,17 +220,16 @@ try {
 } catch (err) {
   console.error("寄信失敗：", err);
 }
-    const { error: updateError } = await supabase
-      .from("course_schedules")
-      .update({
-        remaining: latestSchedule.remaining - 1,
-      })
-      .eq("id", selectedSchedule);
+const { data: updateData, error: updateError } = await supabase
+  .from("course_schedules")
+  .update({
+    remaining: latestSchedule.remaining - 1,
+  })
+  .eq("id", selectedSchedule)
+  .select();
 
-    if (updateError) {
-      console.error(updateError);
-    }
-
+console.log("updateData =", updateData);
+console.log("updateError =", updateError);
     setRemaining((prev) => Math.max(prev - 1, 0));
 
     setLoading(false);
