@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: "Lazy Art <onboarding@resend.dev>",
+      from: "Lazy Art <lazyartus@gmail.com>",
       to: email,
       subject: "🎨 Lazy Art｜報名成功通知",
 
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 
         <p>
           我們已收到您的報名資料，
-          完成付款後將為您保留名額。
+          期待與您及孩子一起參與課程。
         </p>
 
         <hr style="margin:24px 0;" />
@@ -51,12 +51,16 @@ export async function POST(req: Request) {
 
         <hr style="margin:24px 0;" />
 
-        <h3>💳 付款方式</h3>
+        <h3>💳 下一步：加入官方 LINE 完成匯款</h3>
 
         <p>
-          完成匯款／轉帳後，
-          請加入官方 LINE，
-          並提供：
+          請點擊下方按鈕加入
+          <strong>Lazy Art 官方 LINE</strong>，
+          我們將提供匯款資訊。
+        </p>
+
+        <p>
+          完成匯款後，請於 LINE 回覆以下資訊：
         </p>
 
         <ul>
@@ -75,6 +79,7 @@ export async function POST(req: Request) {
               color:white;
               text-decoration:none;
               border-radius:999px;
+              font-weight:bold;
             "
           >
             加入官方 LINE
@@ -83,7 +88,19 @@ export async function POST(req: Request) {
 
         <hr style="margin:24px 0;" />
 
-        <p>期待與您及孩子在課堂上見面！</p>
+        <p>
+          完成加入官方 LINE 並完成匯款後，
+          我們將正式為您保留名額。
+        </p>
+
+        <p>
+          如有任何問題，
+          歡迎透過官方 LINE 與我們聯繫。
+        </p>
+
+        <p>
+          期待與您及孩子在課堂上相見！
+        </p>
 
         <p style="margin-top:32px;">
           <strong>Lazy Art 懶得畫室</strong>
