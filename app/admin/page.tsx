@@ -49,26 +49,19 @@ async function updateRemaining(scheduleId: string, diff: number) {
 }
   async function loadData() {
     setLoading(true);
-
-    const { data, error } = await supabase
-      .from("registrations")
-    .select(`
-  *,
-  courses (
-    title,
-    cover_title
-  )
-`)
-      .order("created_at", {
-        ascending: false,
-      });
-
-    if (error) {
-      console.error(error);
-      alert("讀取資料失敗");
-      setLoading(false);
-      return;
-    }
+const { data, error } = await supabase
+  .from("registrations")
+  .select("*")
+  .order("created_at", {
+    ascending: false,
+  });
+    
+if (error) {
+  console.error("Supabase Error:", error);
+  alert("讀取資料失敗");
+  setLoading(false);
+  return;
+}
 
     setList(data || []);
     setLoading(false);
@@ -130,6 +123,7 @@ await updateRemaining(item.schedule_id, -1);
 
 loadData();
 }
+
 
 async function restoreRegistration(item: Registration) {
   const { error } = await supabase
