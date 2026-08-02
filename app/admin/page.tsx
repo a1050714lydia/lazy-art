@@ -15,12 +15,18 @@ type Registration = {
   total_price: number;
   payment_status: string;
   paid?: boolean;
-};
 
+  courses: {
+    title: string;
+    cover_title: string;
+  };
+};
 export default function AdminPage() {
   const [list, setList] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
-
+const [selectedCourse, setSelectedCourse] = useState<
+  "all" | "father" | "clay"
+>("all");
   useEffect(() => {
     loadData();
   }, []);
@@ -30,7 +36,13 @@ export default function AdminPage() {
 
     const { data, error } = await supabase
       .from("registrations")
-      .select("*")
+    .select(`
+  *,
+  courses (
+    title,
+    cover_title
+  )
+`)
       .order("created_at", {
         ascending: false,
       });
@@ -119,10 +131,25 @@ export default function AdminPage() {
 
     loadData();
   }
+const filteredList =
+  selectedCourse === "all"
+    ? list
+    : list.filter(
+        (item) =>
+          item.courses?.cover_title === selectedCourse
+      );
 
-  const paidCount = list.filter((i) => i.payment_status === "已付款").length;
-  const pendingCount = list.filter((i) => i.payment_status === "待付款").length;
-  const cancelCount = list.filter((i) => i.payment_status === "已取消").length;
+const paidCount = filteredList.filter(
+  (i) => i.payment_status === "已付款"
+).length;
+
+const pendingCount = filteredList.filter(
+  (i) => i.payment_status === "待付款"
+).length;
+
+const cancelCount = filteredList.filter(
+  (i) => i.payment_status === "已取消"
+).length;
 
   return (
     <main className="min-h-screen bg-[#FAF7F2] p-10">
@@ -132,7 +159,7 @@ export default function AdminPage() {
         </h1>
 
         <p className="mt-3 text-slate-500">
-          共 {list.length} 筆報名資料
+        共 {filteredList.length} 筆報名資料
         </p>
 
         <div className="mt-8 grid gap-4 md:grid-cols-4">
