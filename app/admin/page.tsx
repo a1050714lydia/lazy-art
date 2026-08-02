@@ -32,18 +32,18 @@ const [selectedCourse, setSelectedCourse] = useState<
     loadData();
   }, []);
 async function updateRemaining(scheduleId: string, diff: number) {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("course_schedules")
     .select("remaining")
     .eq("id", scheduleId)
     .single();
 
-  if (error || !data) return;
+  if (!data) return;
 
   await supabase
     .from("course_schedules")
     .update({
-      remaining: Math.max(0, data.remaining + diff),
+      remaining: data.remaining + diff,
     })
     .eq("id", scheduleId);
 }
@@ -51,11 +51,16 @@ async function updateRemaining(scheduleId: string, diff: number) {
     setLoading(true);
 const { data, error } = await supabase
   .from("registrations")
-  .select("*")
+  .select(`
+    *,
+    courses (
+      title,
+      cover_title
+    )
+  `)
   .order("created_at", {
     ascending: false,
   });
-    
 if (error) {
   console.error("Supabase Error:", error);
   alert("讀取資料失敗");
@@ -103,26 +108,25 @@ if (error) {
     loadData();
   }
 
-async function cancelRegistration(item: Registration){
-    if (!confirm("確定取消這筆報名？")) return;
-const { error } = await supabase
-  .from("registrations")
-  .update({
- payment_status: "已取消",
-    paid: false,
-  })
-  .eq("id", item.id);
+async function cancelRegistration(item: Registration) {
+  if (!confirm("確定取消這筆報名？")) return;
 
-if (error) {
-  console.log(error);
-  alert(JSON.stringify(error));
-  alert("恢復失敗");
-  return;
-}
+  const { error } = await supabase
+    .from("registrations")
+    .update({
+      payment_status: "已取消",
+      paid: false,
+    })
+    .eq("id", item.id);
 
-await updateRemaining(item.schedule_id, -1);
+  if (error) {
+    alert("取消失敗");
+    return;
+  }
 
-loadData();
+  await updateRemaining(item.schedule_id, 1);
+
+  loadData();
 }
 
 
@@ -136,7 +140,6 @@ async function restoreRegistration(item: Registration) {
     .eq("id", item.id);
 
   if (error) {
-    console.error(error);
     alert("恢復失敗");
     return;
   }
