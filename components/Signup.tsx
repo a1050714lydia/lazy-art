@@ -342,7 +342,62 @@ alert(successMessage);
             scheduleTime={scheduleTime}
             remaining={remaining}
           />
+<CourseSummary
+  courseTitle={courseTitle}
+  scheduleTitle={scheduleTitle}
+  scheduleTime={scheduleTime}
+  remaining={remaining}
+/>
 
+{courseInfo?.cover_title === "watercolor" &&
+  coursePlans.length > 0 && (
+    <div className="rounded-[28px] border border-[#EFE5DE] bg-[#FAF7F2] p-8">
+      <h3 className="mb-6 text-2xl font-black text-[#8B1E2D]">
+        選擇報名方案
+      </h3>
+
+      <div className="space-y-4">
+        {coursePlans.map((plan) => (
+          <button
+            key={plan.id}
+            type="button"
+            onClick={() => {
+              setSelectedPlan(plan);
+              setPrice(plan.price);
+            }}
+            className={`w-full rounded-2xl border p-5 text-left transition ${
+              selectedPlan?.id === plan.id
+                ? "border-[#8B1E2D] bg-white ring-2 ring-[#8B1E2D]/10"
+                : "border-[#E5DDD7] bg-white hover:border-[#8B1E2D]"
+            }`}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-lg font-bold text-slate-800">
+                  {plan.title}
+                </p>
+
+                {plan.gift > 0 && (
+                  <p className="mt-1 text-sm text-[#8B1E2D]">
+                    贈 16K 畫框 {plan.gift} 個
+                  </p>
+                )}
+              </div>
+
+              <p className="text-xl font-black text-[#8B1E2D]">
+                NT${plan.price.toLocaleString()}
+              </p>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <p className="mt-5 text-sm leading-relaxed text-slate-500">
+        單堂可任選 1 堂；兩堂方案可任選 2 堂；四堂方案包含全部 4 堂。
+        畫框顏色可於報名後選擇。
+      </p>
+    </div>
+  )}
           <SignupForm
             courseInfo={courseInfo}
             courseTitle={courseTitle}
