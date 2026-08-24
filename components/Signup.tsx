@@ -164,7 +164,9 @@ const { data: plans, error: plansError } = await supabase
   .select("*")
   .eq("course_id", schedule.course_id)
   .order("sort", { ascending: true });
-
+console.log("目前 schedule.course_id =", schedule.course_id);
+console.log("抓到的 plans =", plans);
+console.log("plansError =", plansError);
 if (plansError) {
   console.error("讀取方案失敗：", plansError);
 } else {
