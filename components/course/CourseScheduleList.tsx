@@ -96,8 +96,8 @@ export default function CourseScheduleList({
             單堂、兩堂或四堂皆可報名，日期可於下一步自由選擇。
           </p>
 
-          <Link
-            href="/schedule"
+         <Link
+  href={`/schedule?schedule=${schedules[0].id}`}
             className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#8B1E2D] px-9 py-4 font-semibold text-white transition hover:bg-[#731827]"
           >
             立即報名
