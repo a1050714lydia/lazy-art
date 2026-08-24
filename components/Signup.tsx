@@ -342,12 +342,7 @@ alert(successMessage);
             scheduleTime={scheduleTime}
             remaining={remaining}
           />
-<CourseSummary
-  courseTitle={courseTitle}
-  scheduleTitle={scheduleTitle}
-  scheduleTime={scheduleTime}
-  remaining={remaining}
-/>
+
 
 {courseInfo?.cover_title === "watercolor" &&
   coursePlans.length > 0 && (
