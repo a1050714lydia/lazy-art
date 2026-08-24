@@ -35,77 +35,75 @@ export default function CourseScheduleList({
 
   return (
     <section id="schedule" className="mt-20">
-      <h2 className="text-3xl font-black text-slate-900">
-        可報名梯次
-      </h2>
+      <div className="rounded-[32px] border border-[#E8D7D9] bg-[#FAF7F2] p-8 md:p-10">
 
-      <div className="mt-8 space-y-6">
-        {schedules.map((schedule) => {
-          const date = new Date(schedule.class_date);
+        <h2 className="text-3xl font-black text-[#8B1E2D]">
+          可報名日期
+        </h2>
 
-          const dateText = `${date.getMonth() + 1}/${date.getDate()}（${
-            week[date.getDay()]
-          }）`;
+        <p className="mt-3 text-slate-500">
+          以下為本期課程日期，實際上課日期於報名時選擇
+        </p>
 
-          const full = schedule.remaining <= 0;
-          const lastOne = schedule.remaining === 1;
+        <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {schedules.map((schedule) => {
+            const date = new Date(schedule.class_date);
 
-          return (
-            <div
-              key={schedule.id}
-              className={`rounded-3xl border p-8 transition ${
-                full
-                  ? "border-gray-200 bg-gray-100"
-                  : "border-[#E8D7D9] bg-white shadow-sm hover:shadow-lg"
-              }`}
-            >
-              <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold text-[#8B1E2D]">
-                    {dateText}
-                  </h3>
+            const dateText = `${date.getMonth() + 1}/${date.getDate()}（${
+              week[date.getDay()]
+            }）`;
 
-                  <p className="mt-3 text-slate-600">
-                    🕒 {schedule.start_time.slice(0, 5)}－
-                    {schedule.end_time.slice(0, 5)}
-                  </p>
+            const full = schedule.remaining <= 0;
 
-                  {full ? (
-                    <p className="mt-4 text-2xl font-bold text-red-600">
-                      🔴 已額滿
-                    </p>
-                  ) : (
-                    <>
-                 <p className="mt-4 text-sm text-slate-500">
-  剩餘名額
-</p>
+            return (
+              <div
+                key={schedule.id}
+                className={`rounded-2xl border px-5 py-4 ${
+                  full
+                    ? "border-gray-200 bg-gray-100"
+                    : "border-[#E5DDD7] bg-white"
+                }`}
+              >
+                <p
+                  className={`text-xl font-bold ${
+                    full ? "text-gray-400" : "text-[#8B1E2D]"
+                  }`}
+                >
+                  {dateText}
+                </p>
 
-<p className="text-3xl font-bold text-green-600">
-  {schedule.remaining} 組
-</p>
-                    </>
-                  )}
-                </div>
+                <p
+                  className={`mt-1 text-sm ${
+                    full ? "text-gray-400" : "text-slate-500"
+                  }`}
+                >
+                  {schedule.start_time.slice(0, 5)}－
+                  {schedule.end_time.slice(0, 5)}
+                </p>
 
-                {full ? (
-                  <button
-                    disabled
-                    className="cursor-not-allowed rounded-full bg-gray-400 px-8 py-4 font-semibold text-white"
-                  >
+                {full && (
+                  <p className="mt-2 text-sm font-semibold text-red-500">
                     已額滿
-                  </button>
-                ) : (
-                  <Link
-                    href={`/schedule?schedule=${schedule.id}`}
-                    className="rounded-full bg-[#8B1E2D] px-8 py-4 font-semibold text-white transition hover:bg-[#731827]"
-                  >
-                    {lastOne ? "🔥 最後 1 組" : "立即報名"}
-                  </Link>
+                  </p>
                 )}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm leading-relaxed text-slate-500">
+            單堂、兩堂或四堂皆可報名，日期可於下一步自由選擇。
+          </p>
+
+          <Link
+            href="/schedule"
+            className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#8B1E2D] px-9 py-4 font-semibold text-white transition hover:bg-[#731827]"
+          >
+            立即報名
+          </Link>
+        </div>
+
       </div>
     </section>
   );
