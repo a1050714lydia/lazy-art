@@ -42,14 +42,19 @@ export default async function Page({ params }: PageProps) {
 
   // 取得尚未過期且啟用中的梯次
  // 取得尚未過期且啟用中的梯次
-const { data: schedules, error: scheduleError } = await supabase
+let scheduleQuery = supabase
   .from("course_schedules")
   .select("*")
   .eq("course_id", course.id)
-  .eq("active", true)
-  .gte("class_date", today)
-  .order("class_date", { ascending: true });
+  .eq("active", true);
 
+// 海洋六週系列課允許開課後中途加入
+if (course.slug !== "clay") {
+  scheduleQuery = scheduleQuery.gte("class_date", today);
+}
+
+const { data: schedules, error: scheduleError } =
+  await scheduleQuery.order("class_date", { ascending: true });
 if (scheduleError) {
   console.error(scheduleError);
 }
