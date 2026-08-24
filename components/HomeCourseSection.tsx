@@ -86,7 +86,7 @@ export default async function HomeCourseSection() {
               </p>
 
               <h2 className="mt-4 text-4xl font-black text-slate-900 md:text-5xl">
-                當期課程
+                當期限定課程
               </h2>
             </div>
 
