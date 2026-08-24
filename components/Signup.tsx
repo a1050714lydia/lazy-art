@@ -380,9 +380,7 @@ alert(successMessage);
             remaining={remaining}
           />
 
-
-{courseInfo?.cover_title === "watercolor" &&
-  coursePlans.length > 0 && (
+{coursePlans.length > 0 && (
     <div className="rounded-[28px] border border-[#EFE5DE] bg-[#FAF7F2] p-8">
       <h3 className="mb-6 text-2xl font-black text-[#8B1E2D]">
         選擇報名方案
