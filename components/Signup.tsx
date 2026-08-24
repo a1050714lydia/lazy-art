@@ -27,7 +27,14 @@ type Course = {
   notice: string | null;
   cover_title: string | null;
 };
-
+type CoursePlan = {
+  id: string;
+  course_id: string;
+  title: string;
+  price: number;
+  gift: number;
+  sort: number;
+};
 type Schedule = {
   id: string;
   title: string;
@@ -60,6 +67,8 @@ const [phone, setPhone] = useState("");
   const [courseId, setCourseId] = useState("");
   const [courseTitle, setCourseTitle] = useState("");
   const [scheduleTitle, setScheduleTitle] = useState("");
+  const [coursePlans, setCoursePlans] = useState<CoursePlan[]>([]);
+const [selectedPlan, setSelectedPlan] = useState<CoursePlan | null>(null);
   const [scheduleTime, setScheduleTime] = useState("");
   const [remaining, setRemaining] = useState(0);
 
@@ -113,7 +122,22 @@ if (error || !data) {
     setCourseId(schedule.course_id);
 
     setCourseTitle(schedule.courses.title);
+const { data: plans, error: plansError } = await supabase
+  .from("course_plans")
+  .select("*")
+  .eq("course_id", schedule.course_id)
+  .order("sort", { ascending: true });
 
+if (plansError) {
+  console.error("讀取方案失敗：", plansError);
+} else {
+  setCoursePlans(plans ?? []);
+
+  if (plans && plans.length > 0) {
+    setSelectedPlan(plans[0]);
+    setPrice(plans[0].price);
+  }
+}
     const date = new Date(schedule.class_date);
     const week = ["日","一","二","三","四","五","六"];
 
@@ -125,16 +149,18 @@ if (error || !data) {
       `${schedule.start_time.slice(0,5)}－${schedule.end_time.slice(0,5)}`
     );
 
-const earlyBirdRemaining =
-  schedule.courses.early_bird_remaining ?? 0;
+if (!plans || plans.length === 0) {
+  const earlyBirdRemaining =
+    schedule.courses.early_bird_remaining ?? 0;
 
-const basePrice =
-  earlyBirdRemaining > 0 &&
-  schedule.courses.early_bird_price != null
-    ? schedule.courses.early_bird_price
-    : schedule.courses.price;
+  const basePrice =
+    earlyBirdRemaining > 0 &&
+    schedule.courses.early_bird_price != null
+      ? schedule.courses.early_bird_price
+      : schedule.courses.price;
 
-setPrice(basePrice ?? 0);
+  setPrice(basePrice ?? 0);
+}
     setRemaining(schedule.remaining);
   }
     async function handleSubmit() {
