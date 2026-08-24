@@ -34,6 +34,7 @@ type CoursePlan = {
   price: number;
   gift: number;
   sort: number;
+  class_count: number;
 };
 type Schedule = {
   id: string;
@@ -45,7 +46,14 @@ type Schedule = {
   course_id: string;
   courses: Course;
 };
-
+type WatercolorSchedule = {
+  id: string;
+  title: string;
+  class_date: string;
+  start_time: string;
+  end_time: string;
+  remaining: number;
+};
 export default function Signup({
   selectedSchedule,
 }: SignupProps) {
@@ -69,6 +77,11 @@ const [phone, setPhone] = useState("");
   const [scheduleTitle, setScheduleTitle] = useState("");
   const [coursePlans, setCoursePlans] = useState<CoursePlan[]>([]);
 const [selectedPlan, setSelectedPlan] = useState<CoursePlan | null>(null);
+const [watercolorSchedules, setWatercolorSchedules] =
+  useState<WatercolorSchedule[]>([]);
+
+const [selectedScheduleIds, setSelectedScheduleIds] =
+  useState<string[]>([]);
   const [scheduleTime, setScheduleTime] = useState("");
   const [remaining, setRemaining] = useState(0);
 
@@ -122,6 +135,30 @@ if (error || !data) {
     setCourseId(schedule.course_id);
 
     setCourseTitle(schedule.courses.title);
+    // 如果是水彩課，把同一門課的所有可報名日期一起抓進來
+if (schedule.courses.cover_title === "watercolor") {
+  const { data: watercolorData, error: watercolorError } =
+    await supabase
+      .from("course_schedules")
+      .select(`
+        id,
+        title,
+        class_date,
+        start_time,
+        end_time,
+        remaining
+      `)
+      .eq("course_id", schedule.course_id)
+      .eq("active", true)
+      .order("class_date", { ascending: true });
+
+  if (watercolorError) {
+    console.error("讀取水彩梯次失敗：", watercolorError);
+  } else {
+    setWatercolorSchedules(watercolorData ?? []);
+    setSelectedScheduleIds([]);
+  }
+}
 const { data: plans, error: plansError } = await supabase
   .from("course_plans")
   .select("*")
@@ -390,6 +427,114 @@ alert(successMessage);
       <p className="mt-5 text-sm leading-relaxed text-slate-500">
         單堂可任選 1 堂；兩堂方案可任選 2 堂；四堂方案包含全部 4 堂。
         畫框顏色可於報名後選擇。
+      </p>
+    </div>
+  )}
+  {courseInfo?.cover_title === "watercolor" &&
+  selectedPlan &&
+  watercolorSchedules.length > 0 && (
+    <div className="rounded-[28px] border border-[#EFE5DE] bg-[#FAF7F2] p-8">
+      <h3 className="text-2xl font-black text-[#8B1E2D]">
+        選擇上課日期
+      </h3>
+
+      <p className="mt-2 text-slate-500">
+        此方案請選擇 {selectedPlan.class_count} 堂課
+      </p>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        {watercolorSchedules.map((schedule) => {
+          const selected = selectedScheduleIds.includes(schedule.id);
+          const isFull = schedule.remaining <= 0;
+
+          const maxSelected =
+            selectedScheduleIds.length >= selectedPlan.class_count;
+
+          const disabled =
+            isFull || (!selected && maxSelected);
+
+          const date = new Date(
+            `${schedule.class_date}T00:00:00`
+          );
+
+          const week = [
+            "日",
+            "一",
+            "二",
+            "三",
+            "四",
+            "五",
+            "六",
+          ];
+
+          return (
+            <button
+              key={schedule.id}
+              type="button"
+              disabled={disabled}
+              onClick={() => {
+                setSelectedScheduleIds((prev) => {
+                  if (prev.includes(schedule.id)) {
+                    return prev.filter(
+                      (id) => id !== schedule.id
+                    );
+                  }
+
+                  if (
+                    prev.length >= selectedPlan.class_count
+                  ) {
+                    return prev;
+                  }
+
+                  return [...prev, schedule.id];
+                });
+              }}
+              className={`rounded-2xl border p-5 text-left transition ${
+                selected
+                  ? "border-[#8B1E2D] bg-white ring-2 ring-[#8B1E2D]/20"
+                  : disabled
+                  ? "cursor-not-allowed border-gray-200 bg-gray-100 opacity-50"
+                  : "border-[#E6D8D0] bg-white hover:border-[#8B1E2D]"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xl font-bold text-slate-800">
+                    {date.getMonth() + 1}/{date.getDate()}
+                    （{week[date.getDay()]}）
+                  </p>
+
+                  <p className="mt-2 text-sm text-slate-500">
+                    {schedule.start_time.slice(0, 5)}
+                    －
+                    {schedule.end_time.slice(0, 5)}
+                  </p>
+                </div>
+
+                <div className="text-right">
+                  {isFull ? (
+                    <span className="font-semibold text-red-500">
+                      已額滿
+                    </span>
+                  ) : selected ? (
+                    <span className="font-bold text-[#8B1E2D]">
+                      ✓ 已選
+                    </span>
+                  ) : (
+                    <span className="text-sm text-green-600">
+                      剩 {schedule.remaining} 位
+                    </span>
+                  )}
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <p className="mt-5 font-semibold text-[#8B1E2D]">
+        已選 {selectedScheduleIds.length} /{" "}
+        {selectedPlan.class_count} 堂
       </p>
     </div>
   )}
