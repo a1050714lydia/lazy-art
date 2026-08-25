@@ -45,6 +45,7 @@ export default function CoursePage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [regularClasses, setRegularClasses] = useState<RegularClass[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>("");
+  const [selectedClass, setSelectedClass] = useState<RegularClass | null>(null);
 
   useEffect(() => {
     loadCourses();
@@ -162,6 +163,95 @@ export default function CoursePage() {
         </section>
 
         <div className="mx-auto max-w-4xl px-6">
+          {selectedClass && (
+  <section
+    id="regular-signup"
+    className="mx-auto max-w-4xl scroll-mt-28 px-6 pb-24"
+  >
+    <div className="rounded-[32px] bg-white p-8 shadow-lg md:p-10">
+      <p className="text-sm font-semibold tracking-[0.25em] text-[#8B1E2D]">
+        REGISTRATION
+      </p>
+
+      <h2 className="mt-3 text-3xl font-black text-slate-900">
+        常態課程報名
+      </h2>
+
+      {/* 已選課程 */}
+      <div className="mt-8 rounded-[24px] bg-[#FAF8F5] p-6">
+        <p className="text-sm font-semibold text-[#8B1E2D]">
+          已選擇課程
+        </p>
+
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h3 className="text-2xl font-black text-slate-900">
+              {selectedClass.title}
+            </h3>
+
+            <p className="mt-2 text-slate-500">
+              {selectedClass.day_of_week}・
+              {selectedClass.start_time}–{selectedClass.end_time}
+            </p>
+          </div>
+
+          <p className="font-bold text-slate-700">
+            NT${Number(selectedClass.price).toLocaleString("zh-TW")}／堂
+          </p>
+        </div>
+      </div>
+
+      {/* 方案 */}
+      <div className="mt-10">
+        <p className="text-lg font-bold text-slate-900">
+          選擇報名方案
+        </p>
+
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          <button
+            type="button"
+            className="rounded-[22px] border border-[#E4DDD8] p-5 text-left transition hover:border-[#8B1E2D]"
+          >
+            <p className="font-bold text-slate-900">
+              單堂報名
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              NT${Number(selectedClass.price).toLocaleString("zh-TW")}
+            </p>
+          </button>
+
+          <button
+            type="button"
+            className="rounded-[22px] border border-[#E4DDD8] p-5 text-left transition hover:border-[#8B1E2D]"
+          >
+            <p className="font-bold text-slate-900">
+              買 11 堂送 1 堂
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              共 12 堂課
+            </p>
+          </button>
+
+          <button
+            type="button"
+            className="rounded-[22px] border border-[#E4DDD8] p-5 text-left transition hover:border-[#8B1E2D]"
+          >
+            <p className="font-bold text-slate-900">
+              買 12 堂送 2 堂
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              共 14 堂＋畫袋
+            </p>
+          </button>
+        </div>
+      </div>
+
+      <p className="mt-8 text-sm text-slate-400">
+        下一步填寫報名資料
+      </p>
+    </div>
+  </section>
+)}
           <div className="h-px bg-[#E8E0DA]" />
         </div>
 
@@ -273,13 +363,24 @@ export default function CoursePage() {
                         </span>
                       )}
                     </div>
+<button
+  type="button"
+  onClick={() => {
+    setSelectedClass(item);
 
-                    <button
-                      type="button"
-                      className="mt-6 text-sm font-bold text-[#8B1E2D] transition hover:opacity-60"
-                    >
-                      選擇此課程 →
-                    </button>
+    setTimeout(() => {
+      document
+        .getElementById("regular-signup")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 100);
+  }}
+  className="mt-6 text-sm font-bold text-[#8B1E2D] transition hover:opacity-60"
+>
+  選擇此課程 →
+</button>
                   </div>
                 ))}
               </div>
