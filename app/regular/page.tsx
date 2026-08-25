@@ -468,8 +468,46 @@ async function handleRegularSubmit() {
 </button>
   </div>
 )}
+
+
+{submitted && selectedClass && (
+  <div className="mt-8 rounded-[24px] border border-[#E4DDD8] bg-[#FAF8F5] p-8 text-center md:p-10">
+    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#8B1E2D] text-2xl text-white">
+      ✓
+    </div>
+
+    <p className="mt-6 text-xs font-bold tracking-[0.2em] text-[#8B1E2D]">
+      REGISTRATION SUCCESS
+    </p>
+
+    <h3 className="mt-2 text-2xl font-bold text-slate-900">
+      報名成功
+    </h3>
+
+    <p className="mt-4 leading-7 text-slate-600">
+      我們已收到您的報名資料。
+      <br />
+      請加入 Lazy Art 官方 LINE 完成付款，
+      <br />
+      付款完成後，我們將為您確認上課名額。
+    </p>
+
+    <div className="mt-7 rounded-2xl bg-white p-5 text-left">
+      <p className="text-sm text-slate-500">報名課程</p>
+      <p className="mt-1 font-bold text-slate-900">
+        {selectedClass.title}
+      </p>
+    </div>
+
+    <p className="mt-6 text-sm text-slate-500">
+      報名確認信已寄送至 {email}
+    </p>
+  </div>
+)}
+
             </section>
           )}
+
         </section>
       </main>
 
