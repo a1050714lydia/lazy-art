@@ -408,7 +408,7 @@ async function handleRegularSubmit() {
 >
   下一步填寫報名資料 →
 </button>
-{showForm && selectedClass && !submitted && (
+{showForm && !submitted && (
   <div
     id="regular-form"
     className="mt-8 rounded-[24px] border border-[#E4DDD8] bg-[#FAF8F5] p-6 md:p-8"
