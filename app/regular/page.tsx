@@ -69,7 +69,80 @@ const [email, setEmail] = useState("");
       setSelectedDay(days[0]);
     }
   }
+async function handleRegularSubmit() {
+  if (!selectedClass) return;
 
+  if (!name.trim() || !phone.trim() || !email.trim()) {
+    alert("請先完整填寫姓名、電話與 Email");
+    return;
+  }
+
+  if (submitting) return;
+
+  setSubmitting(true);
+
+  try {
+    const planText =
+      selectedPlan === "12"
+        ? "買 11 堂送 1 堂"
+        : selectedPlan === "14"
+        ? "買 12 堂送 2 堂"
+        : "單堂報名";
+
+    const totalPrice =
+      selectedPlan === "12"
+        ? selectedClass.price * 11
+        : selectedPlan === "14"
+        ? selectedClass.price * 12
+        : selectedClass.price;
+
+    const scheduleText = `${selectedClass.day_of_week}｜${selectedClass.start_time}–${selectedClass.end_time}`;
+
+    const { error } = await supabase.from("registrations").insert([
+      {
+        schedule_id: selectedClass.id,
+        schedule: scheduleText,
+        parent_name: name,
+        phone: phone,
+        email: email,
+        price: selectedClass.price,
+        total_price: totalPrice,
+        payment_status: "待付款",
+        paid: false,
+        note: `常態課程｜${selectedClass.title}｜${planText}`,
+      },
+    ]);
+
+    if (error) {
+      console.error("常態課程報名失敗：", error);
+      alert("報名失敗：" + error.message);
+      return;
+    }
+
+    await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        parentName: name,
+        courseTitle: selectedClass.title,
+        scheduleTitle: planText,
+        scheduleTime: scheduleText,
+        price: selectedClass.price,
+        totalPrice,
+      }),
+    });
+
+    setSubmitted(true);
+  } catch (err) {
+    console.error("報名發生錯誤：", err);
+    alert("報名時發生錯誤，請稍後再試");
+  } finally {
+    setSubmitting(false);
+  }
+}
   const availableDays = Array.from(
     new Set(regularClasses.map((item) => item.day_of_week))
   ).sort(
@@ -385,28 +458,13 @@ const [email, setEmail] = useState("");
       </div>
     </div>
 
-    <button
+   <button
   type="button"
-  onClick={() => {
-    if (!name.trim() || !phone.trim() || !email.trim()) {
-      alert("請先完整填寫姓名、電話與 Email");
-      return;
-    }
-
-    setShowPayment(true);
-
-    setTimeout(() => {
-      document
-        .getElementById("regular-payment")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-    }, 100);
-  }}
-  className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
+  onClick={handleRegularSubmit}
+  disabled={submitting}
+  className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-90 disabled:opacity-50"
 >
- 完成報名 →
+  {submitting ? "報名處理中..." : "完成報名 →"}
 </button>
   </div>
 )}
