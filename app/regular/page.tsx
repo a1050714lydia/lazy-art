@@ -312,12 +312,24 @@ export default function RegularPage() {
                 </div>
               </div>
 
-              <button
-                type="button"
-                className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:bg-[#6F1724]"
-              >
-                下一步填寫報名資料 →
-              </button>
+        <button
+  type="button"
+  onClick={() => {
+    if (!selectedPlan) return;
+
+    setTimeout(() => {
+      document
+        .getElementById("regular-form")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 100);
+  }}
+  className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
+>
+  下一步填寫報名資料 →
+</button>
             </section>
           )}
         </section>
