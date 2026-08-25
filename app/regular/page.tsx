@@ -34,6 +34,7 @@ export default function RegularPage() {
   const [selectedClass, setSelectedClass] = useState<RegularClass | null>(null);
   const [selectedPlan, setSelectedPlan] = useState("single");
 const [showForm, setShowForm] = useState(false);
+const [showPayment, setShowPayment] = useState(false);
 
 const [name, setName] = useState("");
 const [phone, setPhone] = useState("");
@@ -384,19 +385,28 @@ const [email, setEmail] = useState("");
     </div>
 
     <button
-      type="button"
-      onClick={() => {
-        if (!name.trim() || !phone.trim() || !email.trim()) {
-          alert("請先完整填寫姓名、電話與 Email");
-          return;
-        }
+  type="button"
+  onClick={() => {
+    if (!name.trim() || !phone.trim() || !email.trim()) {
+      alert("請先完整填寫姓名、電話與 Email");
+      return;
+    }
 
-        alert("資料完成，下一步接付款");
-      }}
-      className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
-    >
-      下一步付款 →
-    </button>
+    setShowPayment(true);
+
+    setTimeout(() => {
+      document
+        .getElementById("regular-payment")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 100);
+  }}
+  className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
+>
+  下一步付款 →
+</button>
   </div>
 )}
             </section>
