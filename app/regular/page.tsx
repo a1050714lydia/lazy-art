@@ -392,7 +392,18 @@ async function handleRegularSubmit() {
               </div>
 <button
   type="button"
-  onClick={() => setShowForm(true)}
+  onClick={() => {
+    setShowForm(true);
+
+    setTimeout(() => {
+      document
+        .getElementById("regular-form")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 100);
+  }}
   className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
 >
   下一步填寫報名資料 →
