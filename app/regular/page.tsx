@@ -33,7 +33,11 @@ export default function RegularPage() {
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedClass, setSelectedClass] = useState<RegularClass | null>(null);
   const [selectedPlan, setSelectedPlan] = useState("single");
+const [showForm, setShowForm] = useState(false);
 
+const [name, setName] = useState("");
+const [phone, setPhone] = useState("");
+const [email, setEmail] = useState("");
   useEffect(() => {
     loadRegularClasses();
   }, []);
@@ -311,25 +315,90 @@ export default function RegularPage() {
                   </button>
                 </div>
               </div>
-
-        <button
+<button
   type="button"
-  onClick={() => {
-    if (!selectedPlan) return;
-
-    setTimeout(() => {
-      document
-        .getElementById("regular-form")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-    }, 100);
-  }}
+  onClick={() => setShowForm(true)}
   className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
 >
   下一步填寫報名資料 →
 </button>
+{showForm && selectedClass && (
+  <div
+    id="regular-form"
+    className="mt-8 rounded-[24px] border border-[#E4DDD8] bg-[#FAF8F5] p-6 md:p-8"
+  >
+    <p className="text-xs font-bold tracking-[0.2em] text-[#8B1E2D]">
+      REGISTRATION INFO
+    </p>
+
+    <h3 className="mt-2 text-2xl font-bold text-slate-900">
+      填寫報名資料
+    </h3>
+
+    <p className="mt-2 text-sm text-slate-500">
+      請填寫聯絡資料，下一步將確認付款資訊。
+    </p>
+
+    <div className="mt-8 space-y-5">
+      <div>
+        <label className="mb-2 block text-sm font-bold text-slate-800">
+          姓名
+        </label>
+
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="請輸入姓名"
+          className="w-full rounded-2xl border border-[#E4DDD8] bg-white px-5 py-4 outline-none transition focus:border-[#8B1E2D]"
+        />
+      </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-bold text-slate-800">
+          電話
+        </label>
+
+        <input
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="09xx-xxx-xxx"
+          className="w-full rounded-2xl border border-[#E4DDD8] bg-white px-5 py-4 outline-none transition focus:border-[#8B1E2D]"
+        />
+      </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-bold text-slate-800">
+          Email
+        </label>
+
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="example@email.com"
+          className="w-full rounded-2xl border border-[#E4DDD8] bg-white px-5 py-4 outline-none transition focus:border-[#8B1E2D]"
+        />
+      </div>
+    </div>
+
+    <button
+      type="button"
+      onClick={() => {
+        if (!name.trim() || !phone.trim() || !email.trim()) {
+          alert("請先完整填寫姓名、電話與 Email");
+          return;
+        }
+
+        alert("資料完成，下一步接付款");
+      }}
+      className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
+    >
+      下一步付款 →
+    </button>
+  </div>
+)}
             </section>
           )}
         </section>
