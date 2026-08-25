@@ -34,7 +34,8 @@ export default function RegularPage() {
   const [selectedClass, setSelectedClass] = useState<RegularClass | null>(null);
   const [selectedPlan, setSelectedPlan] = useState("single");
 const [showForm, setShowForm] = useState(false);
-const [showPayment, setShowPayment] = useState(false);
+const [submitted, setSubmitted] = useState(false);
+const [submitting, setSubmitting] = useState(false);
 
 const [name, setName] = useState("");
 const [phone, setPhone] = useState("");
@@ -405,7 +406,7 @@ const [email, setEmail] = useState("");
   }}
   className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
 >
-  下一步付款 →
+ 完成報名 →
 </button>
   </div>
 )}
