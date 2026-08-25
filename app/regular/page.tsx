@@ -396,15 +396,17 @@ async function handleRegularSubmit() {
     setShowForm(true);
 
     setTimeout(() => {
-      document
-        .getElementById("regular-form")
-        ?.scrollIntoView({
+      const form = document.getElementById("regular-form");
+
+      if (form) {
+        form.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
-    }, 100);
+      }
+    }, 200);
   }}
-  className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-60"
+  className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white shadow-md transition hover:opacity-90"
 >
   下一步填寫報名資料 →
 </button>
