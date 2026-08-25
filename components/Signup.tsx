@@ -424,10 +424,10 @@ alert(successMessage);
         ))}
       </div>
 
-      <p className="mt-5 text-sm leading-relaxed text-slate-500">
-        單堂可任選 1 堂；兩堂方案可任選 2 堂；四堂方案包含全部 4 堂。
-        畫框顏色可於報名後選擇。
-      </p>
+    <p className="mt-5 text-sm leading-relaxed text-slate-500">
+  單堂方案可任選 1 堂；兩堂方案可任選 2 堂；四堂方案可任選 4 堂。
+  畫框顏色可於報名後選擇。
+</p>
     </div>
   )}
   {courseInfo?.cover_title === "watercolor" &&

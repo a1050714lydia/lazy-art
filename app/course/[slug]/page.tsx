@@ -104,51 +104,141 @@ if (scheduleError) {
                 </p>
               )}
 
-              {/* 課程資訊 */}
-              <div className="mt-10 rounded-3xl bg-white p-8 shadow-lg">
-                <h2 className="text-2xl font-bold text-slate-900">
-                  課程資訊
-                </h2>
+     {/* 課程資訊 */}
+{course.slug === "watercolor" ? (
+  <div className="mt-10 space-y-8">
 
-                <div className="mt-6 space-y-4 text-slate-700">
-                  {course.start_date && (
-                    <div className="flex items-start gap-3">
-                      <span aria-hidden="true">📅</span>
-                      <span>{course.start_date}</span>
-                    </div>
-                  )}
+    {/* 水彩建築 */}
+    <div className="rounded-3xl bg-white p-8 shadow-lg">
+      <div className="mb-6">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8B1E2D]">
+          SATURDAY
+        </p>
 
-                  {course.class_time && (
-                    <div className="flex items-start gap-3">
-                      <span aria-hidden="true">🕒</span>
-                      <span>{course.class_time}</span>
-                    </div>
-                  )}
+        <h2 className="mt-2 text-3xl font-black text-slate-900">
+          水彩建築
+        </h2>
+      </div>
 
-                  {course.duration && (
-                    <div className="flex items-start gap-3">
-                      <span aria-hidden="true">🎨</span>
-                      <span>{course.duration}</span>
-                    </div>
-                  )}
+      <div className="space-y-4 text-slate-700">
+        <div className="flex items-start gap-3">
+          <span>📅</span>
+          <span>
+            8/29、9/5、9/12、9/19、9/26、10/3、10/10、10/17
+          </span>
+        </div>
 
-                  {course.target_age && (
-                    <div className="flex items-start gap-3">
-                      <span aria-hidden="true">👧</span>
-                      <span>{course.target_age}</span>
-                    </div>
-                  )}
+        <div className="flex items-start gap-3">
+          <span>🕒</span>
+          <span>每週六 15:10–16:40</span>
+        </div>
 
-                  {course.materials && (
-                    <div className="flex items-start gap-3">
-                      <span aria-hidden="true">🧰</span>
-                      <span className="whitespace-pre-line">
-                        {course.materials}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
+        <div className="flex items-start gap-3">
+          <span>🎨</span>
+          <span>每堂 1.5 小時</span>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <span>👧</span>
+          <span>九歲以上</span>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <span>🧰</span>
+          <span>16K Arches 水彩紙、顏料及教材</span>
+        </div>
+      </div>
+    </div>
+
+    {/* 風景水彩 */}
+    <div className="rounded-3xl bg-white p-8 shadow-lg">
+      <div className="mb-6">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#8B1E2D]">
+          SUNDAY
+        </p>
+
+        <h2 className="mt-2 text-3xl font-black text-slate-900">
+          風景水彩
+        </h2>
+      </div>
+
+      <div className="space-y-4 text-slate-700">
+        <div className="flex items-start gap-3">
+          <span>📅</span>
+          <span>
+            8/30、9/6、9/13、9/20、9/27、10/4、10/11、10/18
+          </span>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <span>🕒</span>
+          <span>每週日 13:30–15:00</span>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <span>🎨</span>
+          <span>每堂 1.5 小時</span>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <span>👧</span>
+          <span>九歲以上</span>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <span>🧰</span>
+          <span>16K Arches 水彩紙、顏料及教材</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+) : (
+  <div className="mt-10 rounded-3xl bg-white p-8 shadow-lg">
+    <h2 className="text-2xl font-bold text-slate-900">
+      課程資訊
+    </h2>
+
+    <div className="mt-6 space-y-4 text-slate-700">
+      {course.start_date && (
+        <div className="flex items-start gap-3">
+          <span aria-hidden="true">📅</span>
+          <span>{course.start_date}</span>
+        </div>
+      )}
+
+      {course.class_time && (
+        <div className="flex items-start gap-3">
+          <span aria-hidden="true">🕒</span>
+          <span>{course.class_time}</span>
+        </div>
+      )}
+
+      {course.duration && (
+        <div className="flex items-start gap-3">
+          <span aria-hidden="true">🎨</span>
+          <span>{course.duration}</span>
+        </div>
+      )}
+
+      {course.target_age && (
+        <div className="flex items-start gap-3">
+          <span aria-hidden="true">👧</span>
+          <span>{course.target_age}</span>
+        </div>
+      )}
+
+      {course.materials && (
+        <div className="flex items-start gap-3">
+          <span aria-hidden="true">🧰</span>
+          <span className="whitespace-pre-line">
+            {course.materials}
+          </span>
+        </div>
+      )}
+    </div>
+  </div>
+)}
 
               {/* 課程費用 */}
               {(formattedPrice || course.price_note) && (
