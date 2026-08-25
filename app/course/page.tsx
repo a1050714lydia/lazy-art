@@ -64,21 +64,24 @@ export default function CoursePage() {
     setCourses(data ?? []);
   }
 
-  async function loadRegularClasses() {
-    const { data, error } = await supabase
-      .from("regular_classes")
-      .select("*")
-      .eq("active", true)
-      .order("sort_order", { ascending: true });
+ async function loadRegularClasses() {
+  const { data, error } = await supabase
+    .from("regular_classes")
+    .select("*")
+    .eq("active", true)
+    .order("sort_order", { ascending: true });
 
-    if (error) {
-      console.error("讀取常態課程失敗：", error);
-      return;
-    }
-
-    setRegularClasses(data ?? []);
+  if (error) {
+    console.error("讀取常態課程失敗：", error);
+    alert("讀取常態課程失敗：" + error.message);
+    return;
   }
 
+  console.log("regular_classes 資料：", data);
+ 
+
+  setRegularClasses(data ?? []);
+}
   const groupedClasses = regularClasses.reduce<
     Record<string, RegularClass[]>
   >((groups, item) => {
