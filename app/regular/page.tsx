@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/lib/supabase";
-
+import SignupForm from "@/components/SignupForm";
 type RegularClass = {
   id: string;
   title: string;
@@ -40,6 +40,11 @@ const [submitting, setSubmitting] = useState(false);
 const [name, setName] = useState("");
 const [phone, setPhone] = useState("");
 const [email, setEmail] = useState("");
+const [lineId, setLineId] = useState("");
+const [childName, setChildName] = useState("");
+const [note, setNote] = useState("");
+const [extraPerson, setExtraPerson] = useState(false);
+const [polaroid, setPolaroid] = useState(false);
   useEffect(() => {
     loadRegularClasses();
   }, []);
@@ -410,111 +415,126 @@ async function handleRegularSubmit() {
 >
   下一步填寫報名資料 →
 </button>
-{showForm && !submitted && (
+{showForm && selectedClass && !submitted && (
   <div
     id="regular-form"
     className="mt-8 rounded-[24px] border border-[#E4DDD8] bg-[#FAF8F5] p-6 md:p-8"
   >
-    <p className="text-xs font-bold tracking-[0.2em] text-[#8B1E2D]">
-      REGISTRATION INFO
+    <SignupForm
+      courseInfo={null}
+      courseTitle={selectedClass.title}
+      parentName={name}
+      setParentName={setName}
+      email={email}
+      setEmail={setEmail}
+      phone={phone}
+      setPhone={setPhone}
+      lineId={lineId}
+      setLineId={setLineId}
+      childName={childName}
+      setChildName={setChildName}
+      note={note}
+      setNote={setNote}
+      extraPerson={extraPerson}
+      setExtraPerson={setExtraPerson}
+      polaroid={polaroid}
+      setPolaroid={setPolaroid}
+    />
+{/* 課程費用 */}
+<div className="mt-10 rounded-[24px] border border-[#E6D5D7] bg-[#FAF7F2] p-6 md:p-8">
+  <h3 className="text-2xl font-black text-[#8B1E2D]">
+    課程費用
+  </h3>
+
+  <div className="mt-7 flex items-center justify-between">
+    <p className="font-semibold text-slate-700">
+      {selectedPlan === "single"
+        ? "單堂報名"
+        : selectedPlan === "12"
+        ? "買 11 堂送 1 堂"
+        : "買 12 堂送 2 堂"}
     </p>
 
-    <h3 className="mt-2 text-2xl font-bold text-slate-900">
-      填寫報名資料
-    </h3>
-
-    <p className="mt-2 text-sm text-slate-500">
-      請填寫聯絡資料，下一步將確認付款資訊。
+    <p className="font-bold text-slate-900">
+      NT$
+      {Number(
+        selectedPlan === "12"
+          ? selectedClass.price * 11
+          : selectedPlan === "14"
+          ? selectedClass.price * 12
+          : selectedClass.price
+      ).toLocaleString("zh-TW")}
     </p>
-
-    <div className="mt-8 space-y-5">
-      <div>
-        <label className="mb-2 block text-sm font-bold text-slate-800">
-          姓名
-        </label>
-
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="請輸入姓名"
-          className="w-full rounded-2xl border border-[#E4DDD8] bg-white px-5 py-4 outline-none transition focus:border-[#8B1E2D]"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block text-sm font-bold text-slate-800">
-          電話
-        </label>
-
-        <input
-          type="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="09xx-xxx-xxx"
-          className="w-full rounded-2xl border border-[#E4DDD8] bg-white px-5 py-4 outline-none transition focus:border-[#8B1E2D]"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block text-sm font-bold text-slate-800">
-          Email
-        </label>
-
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="example@email.com"
-          className="w-full rounded-2xl border border-[#E4DDD8] bg-white px-5 py-4 outline-none transition focus:border-[#8B1E2D]"
-        />
-      </div>
-    </div>
-
-   <button
-  type="button"
-  onClick={handleRegularSubmit}
-  disabled={submitting}
-  className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-90 disabled:opacity-50"
->
-  {submitting ? "報名處理中..." : "完成報名 →"}
-</button>
   </div>
-)}
 
+  <div className="my-5 border-t border-dashed border-slate-400" />
 
-{submitted && selectedClass && (
-  <div className="mt-8 rounded-[24px] border border-[#E4DDD8] bg-[#FAF8F5] p-8 text-center md:p-10">
-    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#8B1E2D] text-2xl text-white">
-      ✓
-    </div>
-
-    <p className="mt-6 text-xs font-bold tracking-[0.2em] text-[#8B1E2D]">
-      REGISTRATION SUCCESS
+  <div className="flex items-center justify-between">
+    <p className="text-xl font-black text-[#8B1E2D]">
+      總金額
     </p>
 
-    <h3 className="mt-2 text-2xl font-bold text-slate-900">
-      報名成功
-    </h3>
-
-    <p className="mt-4 leading-7 text-slate-600">
-      我們已收到您的報名資料。
-      <br />
-      請加入 Lazy Art 官方 LINE 完成付款，
-      <br />
-      付款完成後，我們將為您確認上課名額。
+    <p className="text-2xl font-black text-[#8B1E2D]">
+      NT$
+      {Number(
+        selectedPlan === "12"
+          ? selectedClass.price * 11
+          : selectedPlan === "14"
+          ? selectedClass.price * 12
+          : selectedClass.price
+      ).toLocaleString("zh-TW")}
     </p>
+  </div>
+</div>
+    <button
+      type="button"
+      onClick={handleRegularSubmit}
+      disabled={submitting}
+      className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white transition hover:opacity-90 disabled:opacity-50"
+    >
+      {submitting ? "報名處理中..." : "立即報名"}
+    </button>
+    {/* 聯絡資訊 */}
+<div className="mt-12 rounded-[24px] bg-white p-7 shadow-lg md:p-8">
+  <h3 className="text-2xl font-black text-[#8B1E2D]">
+    聯絡資訊
+  </h3>
 
-    <div className="mt-7 rounded-2xl bg-white p-5 text-left">
-      <p className="text-sm text-slate-500">報名課程</p>
-      <p className="mt-1 font-bold text-slate-900">
-        {selectedClass.title}
+  <div className="mt-7 space-y-6">
+    <div>
+      <p className="font-bold text-[#8B1E2D]">
+        📍 上課地點
+      </p>
+
+      <p className="mt-2 text-sm leading-7 text-slate-600">
+        台北市中山區龍江路209巷17號2樓
       </p>
     </div>
 
-    <p className="mt-6 text-sm text-slate-500">
-      報名確認信已寄送至 {email}
-    </p>
+    <div>
+      <p className="font-bold text-[#8B1E2D]">
+        💬 官方 LINE
+      </p>
+
+      <p className="mt-2 text-sm text-slate-600">
+        @lazyart
+      </p>
+
+      <a
+        href="https://lin.ee/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 inline-block rounded-full bg-[#8B1E2D] px-6 py-3 font-bold text-white transition hover:opacity-80"
+      >
+        加入官方 LINE
+      </a>
+    </div>
+  </div>
+
+  <p className="mt-7 text-sm leading-6 text-slate-500">
+    報名完成後，我們將透過官方 LINE 與您確認付款方式、保留名額及課程通知。
+  </p>
+</div>
   </div>
 )}
 
