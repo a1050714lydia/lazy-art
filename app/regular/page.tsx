@@ -339,9 +339,19 @@ async function handleRegularSubmit() {
                 </h3>
 
                 <div className="mt-4 grid gap-3 md:grid-cols-3">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedPlan("single")}
+                 <button
+  type="button"
+  onClick={() => {
+    setSelectedPlan("single");
+    setShowForm(true);
+
+    setTimeout(() => {
+      document.getElementById("regular-form")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  }}
                     className={`rounded-[20px] border p-5 text-left transition ${
                       selectedPlan === "single"
                         ? "border-[#8B1E2D] bg-[#FFF9F9]"
@@ -360,7 +370,17 @@ async function handleRegularSubmit() {
 
                   <button
                     type="button"
-                    onClick={() => setSelectedPlan("12")}
+                onClick={() => {
+  setSelectedPlan("12");
+  setShowForm(true);
+
+  setTimeout(() => {
+    document.getElementById("regular-form")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, 100);
+}}
                     className={`rounded-[20px] border p-5 text-left transition ${
                       selectedPlan === "12"
                         ? "border-[#8B1E2D] bg-[#FFF9F9]"
@@ -378,7 +398,17 @@ async function handleRegularSubmit() {
 
                   <button
                     type="button"
-                    onClick={() => setSelectedPlan("14")}
+                  onClick={() => {
+  setSelectedPlan("14");
+  setShowForm(true);
+
+  setTimeout(() => {
+    document.getElementById("regular-form")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, 100);
+}}
                     className={`rounded-[20px] border p-5 text-left transition ${
                       selectedPlan === "14"
                         ? "border-[#8B1E2D] bg-[#FFF9F9]"
@@ -395,26 +425,7 @@ async function handleRegularSubmit() {
                   </button>
                 </div>
               </div>
-<button
-  type="button"
-  onClick={() => {
-    setShowForm(true);
 
-    setTimeout(() => {
-      const form = document.getElementById("regular-form");
-
-      if (form) {
-        form.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, 200);
-  }}
-  className="mt-8 w-full rounded-full bg-[#8B1E2D] px-6 py-4 font-bold text-white shadow-md transition hover:opacity-90"
->
-  下一步填寫報名資料 →
-</button>
 {showForm && selectedClass && !submitted && (
   <div
     id="regular-form"
