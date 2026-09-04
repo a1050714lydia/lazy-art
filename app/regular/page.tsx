@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -29,7 +28,7 @@ const dayOrder: Record<string, number> = {
   週日: 7,
 };
 
-export default function RegularPage() {
+function RegularPageContent() {
     const searchParams = useSearchParams();
 
 const presetDay = searchParams.get("day");
@@ -609,5 +608,18 @@ async function handleRegularSubmit() {
 
       <Footer />
     </>
+  );
+}
+export default function RegularPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center">
+          <p className="text-slate-500">課程載入中...</p>
+        </div>
+      }
+    >
+      <RegularPageContent />
+    </Suspense>
   );
 }
