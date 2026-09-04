@@ -38,9 +38,9 @@ export default function Navbar() {
             關於畫室
           </Link>
 
-          <Link href="/course" className="transition hover:text-[#8B1E2D]">
-            課程介紹
-          </Link>
+         <Link href="/regular" className="transition hover:text-[#8B1E2D]">
+  課程介紹
+</Link>
 
           <Link href="/teachers" className="transition hover:text-[#8B1E2D]">
             師資介紹

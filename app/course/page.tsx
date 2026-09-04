@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SignupForm from "@/components/SignupForm";
 import { supabase } from "@/lib/supabase";
 
 type Course = {
@@ -46,6 +47,17 @@ export default function CoursePage() {
   const [regularClasses, setRegularClasses] = useState<RegularClass[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>("");
   const [selectedClass, setSelectedClass] = useState<RegularClass | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<
+  "single" | "12" | "14" | ""
+>("");
+const [parentName, setParentName] = useState("");
+const [email, setEmail] = useState("");
+const [phone, setPhone] = useState("");
+const [lineId, setLineId] = useState("");
+const [childName, setChildName] = useState("");
+const [note, setNote] = useState("");
+const [extraPerson, setExtraPerson] = useState(false);
+const [polaroid, setPolaroid] = useState(false);
 
   useEffect(() => {
     loadCourses();
@@ -207,48 +219,84 @@ export default function CoursePage() {
           選擇報名方案
         </p>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
-          <button
-            type="button"
-            className="rounded-[22px] border border-[#E4DDD8] p-5 text-left transition hover:border-[#8B1E2D]"
-          >
-            <p className="font-bold text-slate-900">
-              單堂報名
-            </p>
-            <p className="mt-2 text-sm text-slate-500">
-              NT${Number(selectedClass.price).toLocaleString("zh-TW")}
-            </p>
-          </button>
+   <div className="mt-5 grid gap-4 md:grid-cols-3">
+  <button
+    type="button"
+    onClick={() => setSelectedPlan("single")}
+    className={`rounded-[22px] border p-5 text-left transition ${
+      selectedPlan === "single"
+        ? "border-[#8B1E2D] bg-[#FFF9F9]"
+        : "border-[#E4DDD8] hover:border-[#8B1E2D]"
+    }`}
+  >
+    <p className="font-bold text-slate-900">
+      單堂報名
+    </p>
 
-          <button
-            type="button"
-            className="rounded-[22px] border border-[#E4DDD8] p-5 text-left transition hover:border-[#8B1E2D]"
-          >
-            <p className="font-bold text-slate-900">
-              買 11 堂送 1 堂
-            </p>
-            <p className="mt-2 text-sm text-slate-500">
-              共 12 堂課
-            </p>
-          </button>
+    <p className="mt-2 text-sm text-slate-500">
+      NT${Number(selectedClass.price).toLocaleString("zh-TW")}
+    </p>
+  </button>
 
-          <button
-            type="button"
-            className="rounded-[22px] border border-[#E4DDD8] p-5 text-left transition hover:border-[#8B1E2D]"
-          >
-            <p className="font-bold text-slate-900">
-              買 12 堂送 2 堂
-            </p>
-            <p className="mt-2 text-sm text-slate-500">
-              共 14 堂＋畫袋
-            </p>
-          </button>
-        </div>
-      </div>
+  <button
+    type="button"
+    onClick={() => setSelectedPlan("12")}
+    className={`rounded-[22px] border p-5 text-left transition ${
+      selectedPlan === "12"
+        ? "border-[#8B1E2D] bg-[#FFF9F9]"
+        : "border-[#E4DDD8] hover:border-[#8B1E2D]"
+    }`}
+  >
+    <p className="font-bold text-slate-900">
+      買 11 堂送 1 堂
+    </p>
 
-      <p className="mt-8 text-sm text-slate-400">
-        下一步填寫報名資料
-      </p>
+    <p className="mt-2 text-sm text-slate-500">
+      共 12 堂課
+    </p>
+  </button>
+
+  <button
+    type="button"
+    onClick={() => setSelectedPlan("14")}
+    className={`rounded-[22px] border p-5 text-left transition ${
+      selectedPlan === "14"
+        ? "border-[#8B1E2D] bg-[#FFF9F9]"
+        : "border-[#E4DDD8] hover:border-[#8B1E2D]"
+    }`}
+  >
+    <p className="font-bold text-slate-900">
+      買 12 堂送 2 堂
+    </p>
+
+    <p className="mt-2 text-sm text-slate-500">
+      共 14 堂＋畫袋
+    </p>
+  </button>
+</div>
+</div>
+{selectedPlan && (
+  <SignupForm
+      courseInfo={null}
+      courseTitle={selectedClass.title}
+      parentName={parentName}
+      setParentName={setParentName}
+      email={email}
+      setEmail={setEmail}
+      phone={phone}
+      setPhone={setPhone}
+      lineId={lineId}
+      setLineId={setLineId}
+      childName={childName}
+      setChildName={setChildName}
+      note={note}
+      setNote={setNote}
+      extraPerson={extraPerson}
+      setExtraPerson={setExtraPerson}
+      polaroid={polaroid}
+      setPolaroid={setPolaroid}
+    />
+)}
     </div>
   </section>
 )}

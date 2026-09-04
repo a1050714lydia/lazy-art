@@ -64,7 +64,7 @@ export default async function HomeCourseSection() {
 
           <div className="mt-10">
             <Link
-              href="/course/regular"
+              href="/regular"
               className="inline-flex items-center rounded-full bg-[#8B1E2D] px-10 py-4 text-lg font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#741826] hover:shadow-lg"
             >
               查看常態課程 →
@@ -76,7 +76,80 @@ export default async function HomeCourseSection() {
         <div className="mx-auto my-24 max-w-3xl border-t border-[#E7E0D8]" />
 
         {/* =========================
-            當期課程
+            9 月常態課主題
+        ========================= */}
+        <div className="mx-auto max-w-4xl">
+          <div className="rounded-[32px] border border-[#E7E0D8] bg-white px-6 py-12 text-center shadow-sm md:px-12 md:py-16">
+
+            <p className="font-semibold uppercase tracking-[0.3em] text-[#8B1E2D]">
+              SEPTEMBER THEME
+            </p>
+
+            <p className="mt-5 text-sm font-bold tracking-[0.2em] text-slate-400">
+              週六黏土常態班
+            </p>
+
+            <h2 className="mt-3 text-4xl font-black text-slate-900 md:text-5xl">
+              🍰 甜點黏土
+            </h2>
+
+            <p className="mx-auto mt-7 max-w-2xl text-lg leading-9 text-slate-600">
+              把喜歡的蛋糕、餅乾與甜點變成可愛的黏土作品！
+              <br className="hidden md:block" />
+              從造型、配色到裝飾，完成自己的迷你甜點世界。
+            </p>
+
+            {/* 日期時間 */}
+            <div className="mx-auto mt-9 max-w-xl rounded-[24px] bg-[#FAF8F5] px-6 py-6">
+              <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-8">
+
+                <div>
+                  <p className="text-xs font-semibold tracking-[0.2em] text-slate-400">
+                    START DATE
+                  </p>
+
+                  <p className="mt-1 text-lg font-black text-slate-900">
+                    9/12（六）開始
+                  </p>
+                </div>
+
+                <div className="hidden h-10 w-px bg-[#E7E0D8] md:block" />
+
+                <div>
+                  <p className="text-xs font-semibold tracking-[0.2em] text-slate-400">
+                    CLASS TIME
+                  </p>
+
+                  <p className="mt-1 text-lg font-black text-slate-900">
+                    13:30–15:00
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
+            <p className="mt-7 text-sm leading-7 text-slate-500">
+              週六黏土常態班・可單堂報名・亦可使用常態課方案
+            </p>
+
+            {/* 直接前往週六黏土課程 */}
+            <div className="mt-9">
+              <Link
+                href="/regular?day=週六&course=黏土&time=13:30#classes"
+                className="inline-flex items-center rounded-full bg-[#8B1E2D] px-10 py-4 text-lg font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-[#741826] hover:shadow-lg"
+              >
+                查看課程・立即報名 →
+              </Link>
+            </div>
+
+          </div>
+        </div>
+
+        {/* 分隔線 */}
+        <div className="mx-auto my-24 max-w-3xl border-t border-[#E7E0D8]" />
+
+        {/* =========================
+            當期限定課程
         ========================= */}
         {courses.length > 0 && (
           <>

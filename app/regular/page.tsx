@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/lib/supabase";
@@ -29,6 +30,12 @@ const dayOrder: Record<string, number> = {
 };
 
 export default function RegularPage() {
+    const searchParams = useSearchParams();
+
+const presetDay = searchParams.get("day");
+const presetCourse = searchParams.get("course");
+const presetTime = searchParams.get("time");
+const presetPlan = searchParams.get("plan");
   const [regularClasses, setRegularClasses] = useState<RegularClass[]>([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedClass, setSelectedClass] = useState<RegularClass | null>(null);
@@ -48,6 +55,51 @@ const [polaroid, setPolaroid] = useState(false);
   useEffect(() => {
     loadRegularClasses();
   }, []);
+  useEffect(() => {
+  if (regularClasses.length === 0) return;
+  if (!presetDay || !presetCourse) return;
+
+  const targetClass = regularClasses.find((item) => {
+    const sameDay = item.day_of_week === presetDay;
+
+    const sameCourse =
+      item.title.includes(presetCourse) ||
+      item.category.includes(presetCourse);
+
+    const sameTime = presetTime
+      ? item.start_time.startsWith(presetTime)
+      : true;
+
+    return sameDay && sameCourse && sameTime;
+  });
+
+  if (!targetClass) return;
+
+  // 自動切換到指定星期
+  setSelectedDay(presetDay);
+
+  // 自動選擇指定課程
+  setSelectedClass(targetClass);
+
+  // 預設單堂，但先不要展開家長資料表
+  setSelectedPlan("single");
+  setShowForm(false);
+
+  // 自動滑到「常態課程報名」
+  setTimeout(() => {
+    document
+      .getElementById("regular-signup")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  }, 400);
+}, [
+  regularClasses,
+  presetDay,
+  presetCourse,
+  presetTime,
+]);
 
   async function loadRegularClasses() {
     const { data, error } = await supabase
