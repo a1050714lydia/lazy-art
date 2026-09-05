@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Lazy Art 懶得畫室｜爸爸節親子檯燈 DIY",
-  description: "爸爸節限定親子檯燈 DIY，小班制教學，留下最溫暖的親子回憶。",
+export const metadata = {
+  title: "懶得畫室",
+  description: "Lazy Art 懶得畫室｜兒童美術、黏土、水彩、素描、漫畫與藝術課程",
 };
 export default function RootLayout({
   children,
