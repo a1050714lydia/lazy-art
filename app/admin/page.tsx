@@ -49,15 +49,19 @@ export default function AdminPage() {
   const [list, setList] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // 第一層：全部 / 常態 / 限定
+  // 課程類型
   const [mainFilter, setMainFilter] =
     useState<MainFilter>("all");
 
-  // 第二層：實際課程
+  // 課程
   const [courseFilter, setCourseFilter] =
     useState("all");
 
-  // 第三層：付款狀態
+  // 常態課班別
+  const [classFilter, setClassFilter] =
+    useState("all");
+
+  // 報名狀態
   const [statusFilter, setStatusFilter] =
     useState<StatusFilter>("all");
 
@@ -72,18 +76,15 @@ export default function AdminPage() {
   function getRegistrationType(
     item: Registration
   ): "regular" | "workshop" {
-    // 新資料直接看 registration_type
     if (item.registration_type === "regular") {
       return "regular";
     }
 
-    // 舊資料沒有 registration_type，
-    // 但有 courses 關聯 → 視為限定課
     return "workshop";
   }
 
   /* =========================
-      取得顯示用課程名稱
+      課程名稱
   ========================= */
 
   function getCourseName(item: Registration) {
@@ -95,13 +96,15 @@ export default function AdminPage() {
       );
     }
 
-    return item.courses?.title || "未指定限定課";
+    return (
+      item.course_name ||
+      item.courses?.title ||
+      "未指定限定課"
+    );
   }
 
   /* =========================
-      舊/過渡資料：
-      從 note 讀常態課名稱
-      常態課程｜黏土｜單堂報名
+      舊常態課資料相容
   ========================= */
 
   function getRegularCourseNameFromNote(
@@ -117,7 +120,28 @@ export default function AdminPage() {
   }
 
   /* =========================
-      取得方案名稱
+      常態課班別
+  ========================= */
+
+  function getClassKey(item: Registration) {
+    if (getRegistrationType(item) !== "regular") {
+      return null;
+    }
+
+    // 優先使用 class_id
+    return item.class_id || item.schedule;
+  }
+
+  function getClassName(item: Registration) {
+    if (getRegistrationType(item) !== "regular") {
+      return null;
+    }
+
+    return item.schedule || "未指定班別";
+  }
+
+  /* =========================
+      報名方案
   ========================= */
 
   function getPlanName(item: Registration) {
@@ -133,7 +157,7 @@ export default function AdminPage() {
       return "單堂報名";
     }
 
-    // 相容之前已經寫進 note 的資料
+    // 相容之前的資料
     if (item.note?.includes("買 11 堂送 1 堂")) {
       return "買 11 堂送 1 堂";
     }
@@ -275,7 +299,6 @@ export default function AdminPage() {
       return;
     }
 
-    // 避免已取消資料再次加回名額
     if (item.payment_status === "已取消") {
       return;
     }
@@ -294,10 +317,7 @@ export default function AdminPage() {
       return;
     }
 
-    /*
-      只有限定課才有 course_schedules.remaining
-      常態課不可以碰這張表
-    */
+    // 只有限定課才需要恢復名額
     if (
       getRegistrationType(item) === "workshop" &&
       item.schedule_id
@@ -336,9 +356,7 @@ export default function AdminPage() {
       return;
     }
 
-    /*
-      只有限定課才需要扣回名額
-    */
+    // 只有限定課才需要扣回名額
     if (
       getRegistrationType(item) === "workshop" &&
       item.schedule_id
@@ -353,7 +371,7 @@ export default function AdminPage() {
   }
 
   /* =========================
-      第一層篩選
+      第一層：常態 / 限定
   ========================= */
 
   const mainFilteredList = useMemo(() => {
@@ -363,13 +381,12 @@ export default function AdminPage() {
 
     return list.filter(
       (item) =>
-        getRegistrationType(item) ===
-        mainFilter
+        getRegistrationType(item) === mainFilter
     );
   }, [list, mainFilter]);
 
   /* =========================
-      第二層可選課程
+      第二層：課程
   ========================= */
 
   const availableCourses = useMemo(() => {
@@ -381,27 +398,85 @@ export default function AdminPage() {
   }, [mainFilteredList]);
 
   /* =========================
+      第三層：常態課班別
+  ========================= */
+
+  const availableClasses = useMemo(() => {
+    if (mainFilter !== "regular") {
+      return [];
+    }
+
+    let source = mainFilteredList;
+
+    // 有指定課程時，只顯示該課程的班別
+    if (courseFilter !== "all") {
+      source = source.filter(
+        (item) =>
+          getCourseName(item) === courseFilter
+      );
+    }
+
+    const classMap = new Map<
+      string,
+      string
+    >();
+
+    source.forEach((item) => {
+      const key = getClassKey(item);
+      const name = getClassName(item);
+
+      if (key && name) {
+        classMap.set(key, name);
+      }
+    });
+
+    return Array.from(
+      classMap.entries()
+    ).map(([id, name]) => ({
+      id,
+      name,
+    }));
+  }, [
+    mainFilteredList,
+    mainFilter,
+    courseFilter,
+  ]);
+
+  /* =========================
       最終篩選
   ========================= */
 
   const filteredList = useMemo(() => {
     return mainFilteredList.filter(
       (item) => {
+        // 課程
         const courseMatch =
           courseFilter === "all" ||
           getCourseName(item) === courseFilter;
 
+        // 班別
+        const classMatch =
+          mainFilter !== "regular" ||
+          classFilter === "all" ||
+          getClassKey(item) === classFilter;
+
+        // 狀態
         const statusMatch =
           statusFilter === "all" ||
-          item.payment_status ===
-            statusFilter;
+          item.payment_status === statusFilter;
 
-        return courseMatch && statusMatch;
+        return (
+          courseMatch &&
+          classMatch &&
+          statusMatch
+        );
       }
     );
   }, [
     mainFilteredList,
+    mainFilter,
     courseFilter,
+    classFilter,
     statusFilter,
   ]);
 
@@ -433,17 +508,25 @@ export default function AdminPage() {
   ) {
     setMainFilter(value);
 
-    // 換大分類時重設課程
     setCourseFilter("all");
+    setClassFilter("all");
+    setStatusFilter("all");
+  }
+
+  function changeCourseFilter(
+    course: string
+  ) {
+    setCourseFilter(course);
+
+    // 換課程後重設班別
+    setClassFilter("all");
   }
 
   return (
     <main className="min-h-screen bg-[#FAF7F2] px-4 py-8 sm:px-6 md:p-10">
       <div className="mx-auto max-w-7xl">
 
-        {/* =========================
-            標題
-        ========================= */}
+        {/* 標題 */}
 
         <div>
           <p className="text-sm font-bold tracking-[0.2em] text-[#8B1E2D]/60">
@@ -460,7 +543,7 @@ export default function AdminPage() {
         </div>
 
         {/* =========================
-            第一層：課程類型
+            1. 課程類型
         ========================= */}
 
         <section className="mt-10">
@@ -469,6 +552,7 @@ export default function AdminPage() {
           </p>
 
           <div className="flex flex-wrap gap-3">
+
             <button
               type="button"
               onClick={() =>
@@ -510,11 +594,12 @@ export default function AdminPage() {
             >
               ✨ 限定課程
             </button>
+
           </div>
         </section>
 
         {/* =========================
-            第二層：課程
+            2. 課程
         ========================= */}
 
         {availableCourses.length > 0 && (
@@ -524,10 +609,11 @@ export default function AdminPage() {
             </p>
 
             <div className="flex flex-wrap gap-3">
+
               <button
                 type="button"
                 onClick={() =>
-                  setCourseFilter("all")
+                  changeCourseFilter("all")
                 }
                 className={`rounded-full px-5 py-3 font-semibold transition ${
                   courseFilter === "all"
@@ -544,7 +630,7 @@ export default function AdminPage() {
                     key={course}
                     type="button"
                     onClick={() =>
-                      setCourseFilter(course)
+                      changeCourseFilter(course)
                     }
                     className={`rounded-full px-5 py-3 font-semibold transition ${
                       courseFilter === course
@@ -556,12 +642,66 @@ export default function AdminPage() {
                   </button>
                 )
               )}
+
             </div>
           </section>
         )}
 
         {/* =========================
-            第三層：狀態
+            3. 常態課班別
+        ========================= */}
+
+        {mainFilter === "regular" &&
+          availableClasses.length > 0 && (
+            <section className="mt-7">
+              <p className="mb-3 text-sm font-bold text-slate-500">
+                班別・星期・時間
+              </p>
+
+              <div className="flex flex-wrap gap-3">
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setClassFilter("all")
+                  }
+                  className={`rounded-full px-5 py-3 font-semibold transition ${
+                    classFilter === "all"
+                      ? "bg-[#8B1E2D] text-white"
+                      : "border border-[#DDD5CF] bg-white text-slate-700"
+                  }`}
+                >
+                  全部班別
+                </button>
+
+                {availableClasses.map(
+                  (classItem) => (
+                    <button
+                      key={classItem.id}
+                      type="button"
+                      onClick={() =>
+                        setClassFilter(
+                          classItem.id
+                        )
+                      }
+                      className={`rounded-full px-5 py-3 font-semibold transition ${
+                        classFilter ===
+                        classItem.id
+                          ? "bg-[#8B1E2D] text-white"
+                          : "border border-[#DDD5CF] bg-white text-slate-700"
+                      }`}
+                    >
+                      🗓 {classItem.name}
+                    </button>
+                  )
+                )}
+
+              </div>
+            </section>
+          )}
+
+        {/* =========================
+            4. 報名狀態
         ========================= */}
 
         <section className="mt-7">
@@ -570,6 +710,7 @@ export default function AdminPage() {
           </p>
 
           <div className="flex flex-wrap gap-3">
+
             {(
               [
                 "all",
@@ -595,6 +736,7 @@ export default function AdminPage() {
                   : status}
               </button>
             ))}
+
           </div>
         </section>
 
@@ -647,7 +789,7 @@ export default function AdminPage() {
         </div>
 
         {/* =========================
-            報名列表
+            報名資料
         ========================= */}
 
         {loading ? (
@@ -661,11 +803,12 @@ export default function AdminPage() {
             </p>
 
             <p className="mt-2 text-sm text-slate-400">
-              可以切換上方課程或報名狀態查看
+              可以切換上方分類查看其他報名
             </p>
           </div>
         ) : (
           <div className="mt-10 space-y-5">
+
             {filteredList.map((item) => {
               const type =
                 getRegistrationType(item);
@@ -682,9 +825,10 @@ export default function AdminPage() {
                   className="rounded-[28px] border border-[#E8D7D9] bg-white p-6 shadow-md transition hover:shadow-lg md:p-8"
                 >
 
-                  {/* 類型標籤 */}
+                  {/* 標籤 */}
 
                   <div className="mb-5 flex flex-wrap items-center gap-2">
+
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-bold ${
                         type === "regular"
@@ -707,11 +851,12 @@ export default function AdminPage() {
                           {planName}
                         </span>
                       )}
+
                   </div>
 
                   <div className="flex flex-col justify-between gap-6 md:flex-row">
 
-                    {/* 左側資料 */}
+                    {/* 左邊資料 */}
 
                     <div>
                       <h2 className="text-2xl font-black text-[#8B1E2D]">
@@ -719,6 +864,7 @@ export default function AdminPage() {
                       </h2>
 
                       <div className="mt-4 space-y-2 text-slate-600">
+
                         <p>
                           👧 小朋友：
                           {item.child_name ||
@@ -728,6 +874,12 @@ export default function AdminPage() {
                         <p>
                           📞 {item.phone}
                         </p>
+
+                        {item.email && (
+                          <p>
+                            ✉️ {item.email}
+                          </p>
+                        )}
 
                         <p>
                           📚 {courseName}
@@ -743,6 +895,7 @@ export default function AdminPage() {
                               🎟 {planName}
                             </p>
                           )}
+
                       </div>
                     </div>
 
@@ -762,13 +915,15 @@ export default function AdminPage() {
                         )}
                       </p>
                     </div>
+
                   </div>
 
-                  {/* 父親節限定資訊 */}
+                  {/* 父親節限定資料 */}
 
                   {item.courses?.cover_title ===
                     "father" && (
                     <div className="mt-6 flex flex-wrap gap-3">
+
                       <span className="rounded-full bg-[#FAF7F2] px-4 py-2 text-sm">
                         {item.polaroid
                           ? "📸 已加購拍立得"
@@ -780,6 +935,7 @@ export default function AdminPage() {
                           ? "👨‍👩‍👧 多一位同行"
                           : "👨‍👩‍👧 1 大 1 小"}
                       </span>
+
                     </div>
                   )}
 
@@ -876,6 +1032,7 @@ export default function AdminPage() {
                 </div>
               );
             })}
+
           </div>
         )}
 
