@@ -33,13 +33,32 @@ export default function ClayCarousel() {
   };
 
   return (
-  <div className="mx-auto mt-7 w-[82%] max-w-[360px] sm:w-[88%] sm:max-w-[440px] md:w-full md:max-w-[520px]">
+    <div className="mx-auto mt-7 w-full max-w-[520px]">
 
-      {/* 輪播照片 */}
-      <div className="relative w-full overflow-hidden rounded-[22px] bg-[#FAF8F5]">
+      {/* 輪播照片區 */}
+      <div
+        className="
+          relative
+          h-[260px]
+          w-full
+          overflow-hidden
+          rounded-[22px]
+          bg-[#FAF8F5]
+          sm:h-[320px]
+          md:h-[380px]
+        "
+      >
 
+        {/* 五張照片橫向排列，但一次只顯示一張 */}
         <div
-          className="flex w-full transition-transform duration-700 ease-in-out"
+          className="
+            flex
+            h-full
+            w-full
+            transition-transform
+            duration-700
+            ease-in-out
+          "
           style={{
             transform: `translateX(-${current * 100}%)`,
           }}
@@ -47,12 +66,28 @@ export default function ClayCarousel() {
           {images.map((src, index) => (
             <div
               key={src}
-              className="w-full min-w-full flex-shrink-0"
+              className="
+                flex
+                h-full
+                w-full
+                min-w-full
+                flex-shrink-0
+                items-center
+                justify-center
+                p-3
+                sm:p-4
+                md:p-5
+              "
             >
               <img
                 src={src}
                 alt={`甜點黏土作品 ${index + 1}`}
-                className="block aspect-[4/3] w-full object-cover"
+                className="
+                  block
+                  h-full
+                  w-full
+                  object-contain
+                "
               />
             </div>
           ))}
@@ -64,14 +99,24 @@ export default function ClayCarousel() {
           onClick={previousImage}
           aria-label="上一張"
           className="
-            absolute left-3 top-1/2
-            flex h-9 w-9 -translate-y-1/2
-            items-center justify-center
-            rounded-full bg-white/85
-            text-xl text-slate-700
-            shadow-md backdrop-blur-sm
+            absolute
+            left-3
+            top-1/2
+            flex
+            h-9
+            w-9
+            -translate-y-1/2
+            items-center
+            justify-center
+            rounded-full
+            bg-white/85
+            text-xl
+            text-slate-700
+            shadow-md
+            backdrop-blur-sm
             transition
-            hover:scale-105 hover:bg-white
+            hover:scale-105
+            hover:bg-white
           "
         >
           ‹
@@ -83,18 +128,29 @@ export default function ClayCarousel() {
           onClick={nextImage}
           aria-label="下一張"
           className="
-            absolute right-3 top-1/2
-            flex h-9 w-9 -translate-y-1/2
-            items-center justify-center
-            rounded-full bg-white/85
-            text-xl text-slate-700
-            shadow-md backdrop-blur-sm
+            absolute
+            right-3
+            top-1/2
+            flex
+            h-9
+            w-9
+            -translate-y-1/2
+            items-center
+            justify-center
+            rounded-full
+            bg-white/85
+            text-xl
+            text-slate-700
+            shadow-md
+            backdrop-blur-sm
             transition
-            hover:scale-105 hover:bg-white
+            hover:scale-105
+            hover:bg-white
           "
         >
           ›
         </button>
+
       </div>
 
       {/* 下方圓點 */}
