@@ -33,7 +33,7 @@ export default function ClayCarousel() {
   };
 
   return (
-    <div className="mx-auto mt-7 w-full max-w-[480px] md:max-w-[520px]">
+  <div className="mx-auto mt-7 w-[82%] max-w-[360px] sm:w-[88%] sm:max-w-[440px] md:w-full md:max-w-[520px]">
 
       {/* 輪播照片 */}
       <div className="relative w-full overflow-hidden rounded-[22px] bg-[#FAF8F5]">
