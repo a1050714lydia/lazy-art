@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
+import ClayCarousel from "./ClayCarousel";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -90,10 +91,12 @@ export default async function HomeCourseSection() {
             </p>
 
             <h2 className="mt-3 text-4xl font-black text-slate-900 md:text-5xl">
-              🍰 甜點黏土
-            </h2>
+  🍰 甜點黏土
+</h2>
 
-            <p className="mx-auto mt-7 max-w-2xl text-lg leading-9 text-slate-600">
+<ClayCarousel />
+
+<p className="mx-auto mt-7 max-w-2xl text-lg leading-9 text-slate-600">
               把喜歡的蛋糕、餅乾與甜點變成可愛的黏土作品！
               <br className="hidden md:block" />
               從造型、配色到裝飾，完成自己的迷你甜點世界。
