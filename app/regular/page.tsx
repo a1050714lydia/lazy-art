@@ -128,8 +128,13 @@ const [polaroid, setPolaroid] = useState(false);
 async function handleRegularSubmit() {
   if (!selectedClass) return;
 
-  if (!name.trim() || !phone.trim() || !email.trim()) {
-    alert("請先完整填寫姓名、電話與 Email");
+  if (
+    !name.trim() ||
+    !phone.trim() ||
+    !email.trim() ||
+    !childName.trim()
+  ) {
+    alert("請先完整填寫家長姓名、學生姓名、電話與 Email");
     return;
   }
 
@@ -152,22 +157,42 @@ async function handleRegularSubmit() {
         ? selectedClass.price * 12
         : selectedClass.price;
 
-    const scheduleText = `${selectedClass.day_of_week}｜${selectedClass.start_time}–${selectedClass.end_time}`;
+    const scheduleText =
+      `${selectedClass.day_of_week}｜${selectedClass.start_time}–${selectedClass.end_time}`;
 
-    const { error } = await supabase.from("registrations").insert([
-      {
-        schedule_id: selectedClass.id,
-        schedule: scheduleText,
-        parent_name: name,
-        phone: phone,
-        email: email,
-        price: selectedClass.price,
-        total_price: totalPrice,
-        payment_status: "待付款",
-        paid: false,
-        note: `常態課程｜${selectedClass.title}｜${planText}`,
-      },
-    ]);
+    const { error } = await supabase
+      .from("registrations")
+      .insert([
+        {
+          // 基本資料
+          parent_name: name.trim(),
+          child_name: childName.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          line_id: lineId.trim() || null,
+          note: note.trim() || null,
+
+          // 常態課分類
+          registration_type: "regular",
+          course_name: selectedClass.category,
+          class_id: selectedClass.id,
+          plan: selectedPlan,
+
+          // 課程時間
+          schedule: scheduleText,
+
+          // 常態課不使用限定課 schedule_id
+          schedule_id: null,
+
+          // 金額
+          price: selectedClass.price,
+          total_price: totalPrice,
+
+          // 付款
+          payment_status: "待付款",
+          paid: false,
+        },
+      ]);
 
     if (error) {
       console.error("常態課程報名失敗：", error);
@@ -175,6 +200,7 @@ async function handleRegularSubmit() {
       return;
     }
 
+    // 寄 Email
     await fetch("/api/send-email", {
       method: "POST",
       headers: {
