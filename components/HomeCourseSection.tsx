@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import ClayCarousel from "./ClayCarousel";
+import WatercolorCarousel from "./WatercolorCarousel";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -91,12 +92,12 @@ export default async function HomeCourseSection() {
             </p>
 
             <h2 className="mt-3 text-4xl font-black text-slate-900 md:text-5xl">
-  🍰 甜點黏土
-</h2>
+              🍰 甜點黏土
+            </h2>
 
-<ClayCarousel />
+            <ClayCarousel />
 
-<p className="mx-auto mt-7 max-w-2xl text-lg leading-9 text-slate-600">
+            <p className="mx-auto mt-7 max-w-2xl text-lg leading-9 text-slate-600">
               把喜歡的蛋糕、餅乾與甜點變成可愛的黏土作品！
               <br className="hidden md:block" />
               從造型、配色到裝飾，完成自己的迷你甜點世界。
@@ -135,7 +136,6 @@ export default async function HomeCourseSection() {
               週六黏土常態班・可單堂報名・亦可使用常態課方案
             </p>
 
-            {/* 直接前往週六黏土課程 */}
             <div className="mt-9">
               <Link
                 href="/regular?day=週六&course=黏土&time=13:30#classes"
@@ -181,6 +181,13 @@ export default async function HomeCourseSection() {
                     <h3 className="mt-5 text-4xl font-black text-slate-900 md:text-5xl">
                       {course.title}
                     </h3>
+
+                    {/* =========================
+                        暑末水彩漫漫照片輪播
+                    ========================= */}
+                    {course.title === "暑末水彩漫漫" && (
+                      <WatercolorCarousel />
+                    )}
 
                     <p className="mx-auto mt-8 max-w-2xl text-lg leading-9 text-slate-600">
                       {course.description}
